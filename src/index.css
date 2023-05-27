@@ -1,21 +1,21 @@
 :root {
-  width:100vh;
-  height:100vh;
-  background: rgb(18,32,38);
-  background: linear-gradient(0deg, rgba(18,32,38,1) 0%, rgba(69,110,131,1) 27%, rgb(54, 128, 177) 64%, rgb(251, 255, 133) 100%);
-  border-color:black;
-  border-width: 10px;
-  border-style:solid;
+  background-image: url("./assets/sky-clouds.jpg");
+  background-repeat: no-repeat;
+  background-size:fill;
   
+  /*border-width:2px;
+  border-color:red;
+  border-style: solid;*/
 }
 
 
 body {
+  background-color:transparent;
   
 }
-
 
 
 @media (prefers-color-scheme: light) {
   
 }
+
