@@ -4,9 +4,21 @@
 
 .navCustomized {
     background-color:rgba(255, 255, 255, 0.637) !important;
-
 }
 
+.nav-link:hover {
+    background-color:rgba(255, 255, 255, 0.479);
+    border-radius:12px;
+}
+
+.ico-WiDayCloudy{
+    display:inline-block;
+    margin-left:10px;
+    color:yellow;
+    border-radius:80px;
+    padding-left:8px;
+    padding-right:8px;
+}
 .accordion-item {
     background: rgba(255, 255, 255, 0.432) !important;
     -webkit-backdrop-filter: blur(10px) !important;
@@ -18,12 +30,32 @@
 }
 
 .contentBox {
-    background: rgba(255, 255, 255, 0.432);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    /* border: 1px solid rgba(255, 255, 255, 0.404); */
+    background: rgba(255, 255, 255, 0.432) !important; 
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
+    
+}
+
+.results-list, .list-group-item {
+    z-index:100;
+    position:absolute;
+    width:100%;
+
+}
+
+
+.results-list {
+    max-height: 270px;
+    overflow:auto;
+    margin-top:7px;
+    
+}
+
+.list-group-item:hover{
+    background-color:rgba(218, 218, 218, 0.021);
 }
 
 .search-bar-container {
+    position: relative;
     
 }

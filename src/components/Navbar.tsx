@@ -6,7 +6,7 @@ function NavBar() {
         <>
             <nav className="navbar navbar-expand-lg mb-5 rounded mt-3 navCustomized">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="https://www.alexdiamandi.com">www.alexdiamandi.com</a>
+                    <a className="navbar-brand" href="https://www.alexdiamandi.com">Weather Forecast App</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -16,7 +16,7 @@ function NavBar() {
                                 <a className="nav-link active" aria-current="page" href="https://www.alexdiamandi.com">Creator Home page</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link active" href="https://github.com/alexdmdi/weather-app">Source Code</a>
+                                <a className="nav-link active" href="https://github.com/alexdmdi/weather-app">Github Page</a>
                             </li>
                             
                         </ul>

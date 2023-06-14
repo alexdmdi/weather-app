@@ -58,11 +58,7 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
             const filteredCities = filterCities(locations, value.toLowerCase())
             
             setSearchResults(filteredCities);
-
-            if  
-                return <SearchResults filteredResults={filteredCities} />;
-            
-
+            return <SearchResults filteredResults={filteredCities} />;
         }
         if (value.length === 0) {
             return null;
