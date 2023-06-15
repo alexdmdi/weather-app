@@ -8,7 +8,7 @@ interface CityObject {
   }
 
 interface SearchResultsProps {
-    filteredResults: CityObject[];
+    filteredResults: CityObject[];  //filteredResults contains an array of CityObject, where each cityObject has country:string , city; string
 }
 
 const SearchResults = ( {filteredResults} : SearchResultsProps) => {
@@ -16,10 +16,7 @@ const SearchResults = ( {filteredResults} : SearchResultsProps) => {
         <>
             <div className="list-group results-list contentBox">
                 {/* <div className="list-group-item">Toronto, ON</div> */}
-                
-                {
-                filteredResults.map((location) => <li key={uuid()} onClick={() => {}} className="list-group-item"> { `${location.city}, ${location.country}`}  </li>)
-                }
+                {filteredResults.map((location) => <li key={uuid()} onClick={() => {}} className="list-group-item"> { `${location.city}, ${location.country}`}  </li>)}
 
             </div>
         </>

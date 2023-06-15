@@ -1,12 +1,10 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, ChangeEvent, useRef} from "react";
 import { useEffect } from 'react';
 
 import styles from '../App.css';
 import locations from "../assets/locations";
 import { FaSearch } from "react-icons/fa";
 import config from "../config";
-
-//import {filterCities} from "./filterCities";
 import SearchResults from "./SearchResults";
 
 interface SearchBarProps {
@@ -16,6 +14,7 @@ interface SearchBarProps {
 const SearchBar = ({setFilteredCities} : SearchBarProps) => {
     const[input, setInput] = useState("");
     const[searchResults, setSearchResults] = useState <CityObject[]>([]);
+    const searchContainerRef = useRef<HTMLDivElement>(null);
 
     //Geocoding API - max 60 calls per minute, max 1000 a day
     const fetchData = async (value: string) => { 
@@ -34,9 +33,10 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
         country: string;
         city: string;
     }
+    
     type CityMapping = Record<string, string[]>;  
       
-    function filterCities(locations: CityMapping, input: string): CityObject[] { /*used to be CityObject[] instead of 'void'*/
+    function filterCities(locations: CityMapping, input: string): CityObject[] { 
         const filteredCities: CityObject[] = [];
       
         Object.entries(locations).forEach(([country, cityList]) => {
@@ -50,34 +50,59 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
     }
 
 
-    const handleSearchChange = (value: string) => {
-        setInput(value)
-        console.log(`handleChange function is now called with with passed search query of ${value.toLowerCase()}`)
+    const handleSearchChange = (eventTargetValue: string) => {
+        setInput(eventTargetValue)
+        console.log(`handleChange function called with with passed search query of ${eventTargetValue.toLowerCase()} and eventTargetValue.length is ${eventTargetValue.length}`)
+
+        // if (eventTargetValue.length <= 1) {
+        //     console.log('should return search results with empty array passed as prop')
+        //     setSearchResults([]);
+        //     return <SearchResults filteredResults={searchResults} />;
+        // }
         
-        if (value.length > 1) {
-            const filteredCities = filterCities(locations, value.toLowerCase())
+        if (eventTargetValue.length > 1) {
+            const filteredCities = filterCities(locations, eventTargetValue.toLowerCase())
             
             setSearchResults(filteredCities);
+            console.log(`filteredCities is: ${filteredCities}`)
             return <SearchResults filteredResults={filteredCities} />;
         }
-        if (value.length === 0) {
-            return null;
+        else {
+            setSearchResults([]);
+            return <SearchResults filteredResults={searchResults} />;
         }
-
+        
+       
+        
         // fetchData(value) 
     }
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (
+          searchContainerRef.current &&
+          !searchContainerRef.current.contains(event.target as Node)
+        ) {
+          setSearchResults([]);
+        }
+      };
+    
+    
 
     useEffect(() => {console.log(searchResults);}, [searchResults]);
 
     return (
         <>
-            <form>
-                <div className="form-group d-flex align-items-center">
-                    {/* <label htmlFor="formGroupExampleInput"></label> */}
-                    <input type="text" id="searchInput" autoComplete="off" className="form-control text-center" value={input} onChange={(e) => handleSearchChange(e.target.value)} placeholder="Search for location"/>
-                    <FaSearch type="submit" className="ms-2 me-2"></FaSearch>  
-                </div>
-            </form>
+            <div ref={searchContainerRef}>
+                <form>
+                    <div className="form-group d-flex align-items-center">
+                        {/* <label htmlFor="formGroupExampleInput"></label> */}
+                        <input type="text" id="searchInput" autoComplete="off" className="form-control text-center" value={input} onChange={ (e) => handleSearchChange(e.target.value) } placeholder="Search for location"/>
+                        <FaSearch type="submit" className="ms-2 me-2"></FaSearch>  
+                    </div>
+                </form>
+                
+            </div>
+            
             
         
         </>
