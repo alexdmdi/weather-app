@@ -1,11 +1,11 @@
-import React, {useState, ChangeEvent, useRef} from "react";
-import { useEffect } from 'react';
+import React, {useState, ChangeEvent, useEffect, useRef} from "react";
 
 import styles from '../App.css';
 import locations from "../assets/locations";
 import { FaSearch } from "react-icons/fa";
 import config from "../config";
 import SearchResults from "./SearchResults";
+import { CityObject } from "./types";
 
 interface SearchBarProps {
     setFilteredCities: React.Dispatch<React.SetStateAction<any[]>>;
@@ -15,6 +15,7 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
     const[input, setInput] = useState("");
     const[searchResults, setSearchResults] = useState <CityObject[]>([]);
     const searchContainerRef = useRef<HTMLDivElement>(null);
+
 
     //Geocoding API - max 60 calls per minute, max 1000 a day
     const fetchData = async (value: string) => { 
@@ -28,11 +29,6 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
         }
     };
 
-
-    interface CityObject {
-        country: string;
-        city: string;
-    }
     
     type CityMapping = Record<string, string[]>;  
       
@@ -51,29 +47,22 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
 
 
     const handleSearchChange = (eventTargetValue: string) => {
-        setInput(eventTargetValue)
+        setInput(eventTargetValue);
         console.log(`handleChange function called with with passed search query of ${eventTargetValue.toLowerCase()} and eventTargetValue.length is ${eventTargetValue.length}`)
 
-        // if (eventTargetValue.length <= 1) {
-        //     console.log('should return search results with empty array passed as prop')
-        //     setSearchResults([]);
-        //     return <SearchResults filteredResults={searchResults} />;
-        // }
-        
-        if (eventTargetValue.length > 1) {
-            const filteredCities = filterCities(locations, eventTargetValue.toLowerCase())
-            
-            setSearchResults(filteredCities);
-            console.log(`filteredCities is: ${filteredCities}`)
-            return <SearchResults filteredResults={filteredCities} />;
-        }
-        else {
+        if (eventTargetValue.length <= 1) {
             setSearchResults([]);
-            return <SearchResults filteredResults={searchResults} />;
-        }
-        
+            return;
+          }
+      
+          if (eventTargetValue.length > 1) {
+            const filteredCities = filterCities(
+              locations as CityMapping,
+              eventTargetValue.toLowerCase()
+            );
+            setSearchResults(filteredCities);
+          }
        
-        
         // fetchData(value) 
     }
 
@@ -86,13 +75,17 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
         }
       };
     
-    
+      useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {document.removeEventListener("mousedown", handleClickOutside);};
+      }, []);
+
 
     useEffect(() => {console.log(searchResults);}, [searchResults]);
 
     return (
         <>
-            <div ref={searchContainerRef}>
+            <div ref={searchContainerRef} className="search-bar-container">
                 <form>
                     <div className="form-group d-flex align-items-center">
                         {/* <label htmlFor="formGroupExampleInput"></label> */}
@@ -100,13 +93,12 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
                         <FaSearch type="submit" className="ms-2 me-2"></FaSearch>  
                     </div>
                 </form>
-                
+
+                {searchResults.length > 0 && (<SearchResults filteredResults={searchResults} />)}
             </div>
-            
-            
-        
+                
         </>
-    )
-}
+    );
+};
 
 export default SearchBar;

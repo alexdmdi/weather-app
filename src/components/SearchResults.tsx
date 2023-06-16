@@ -1,26 +1,21 @@
-// import filterCities from "./SearchBar";
-import React from "react";
-import { v4 as uuid } from "uuid";
-
-interface CityObject {
-    country: string;
-    city: string;
-  }
-
 interface SearchResultsProps {
-    filteredResults: CityObject[];  //filteredResults contains an array of CityObject, where each cityObject has country:string , city; string
+    // filteredResults: CityObject[];  //filteredResults contains an array of CityObject, where each cityObject has country:string , city; string
+    filteredResults: { city: string; country: string }[];
 }
 
 const SearchResults = ( {filteredResults} : SearchResultsProps) => {
     return (
-        <>
-            <div className="list-group results-list contentBox">
-                {/* <div className="list-group-item">Toronto, ON</div> */}
-                {filteredResults.map((location) => <li key={uuid()} onClick={() => {}} className="list-group-item"> { `${location.city}, ${location.country}`}  </li>)}
+        <div className="search-results mt-2">
+          <ul className="list-group contentBox">
+            {filteredResults.map((result, index) => (
+              <li key={index} onClick={() => {}} className="list-group-item list-group-item-action fs-6">
+                {`${result.city}, ${result.country}`}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
 
-            </div>
-        </>
-    )
 }
 
 export default SearchResults;
