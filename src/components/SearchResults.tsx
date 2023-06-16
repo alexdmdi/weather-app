@@ -1,5 +1,4 @@
 interface SearchResultsProps {
-    // filteredResults: CityObject[];  //filteredResults contains an array of CityObject, where each cityObject has country:string , city; string
     filteredResults: { city: string; country: string }[];
 }
 
