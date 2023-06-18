@@ -6,14 +6,14 @@ import React, { useState } from "react";
 
 import NavBar from './components/Navbar'
 import FutureForecast from './components/FutureForecast';
-import { CityObject } from "./components/types";
+import { Location } from "./components/types";
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
 import { WiDayCloudy } from "react-icons/wi";
 
 function App() {
 
-  const [filteredCities, setFilteredCities] = useState<any[]>([]); // State variable to store filtered cities
+  const [filteredLocations, setFilteredLocations] = useState<Location[]>([]); // State variable to store filtered cities
   
   return (
     <>
@@ -25,18 +25,20 @@ function App() {
             <WiDayCloudy size='1.5em' />
           </div>
         </h1>
+
         <div className="row text-center">
           <div className="col-xl-3 col-md-2 col-sm-1"></div>
           <div className="col pt-3 pb-3 search-bar-container p-0">
             <div className="fs-4 contentBox p-1 rounded">
             <div className="search-container">
-                <SearchBar setFilteredCities={setFilteredCities} />
+                <SearchBar setFilteredLocations={setFilteredLocations} />  
                 
             </div>
             </div>
           </div>
           <div className="col-xl-3 col-md-2 col-sm-1"></div>
         </div>
+
         <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
           <div className="col-xl-1 t"></div>
           <div className="col pt-3 pb-5 ">
@@ -48,12 +50,18 @@ function App() {
           </div>
           <div className="col-xl-1"></div>
         </div>
+
         <div className="row border rounded ms-0 me-0">
           <FutureForecast />
         </div>
+
       </div>
+
+      
     </>
   );
 }
 
 export default App
+
+//for line 34: passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called

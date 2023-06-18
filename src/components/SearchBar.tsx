@@ -5,45 +5,27 @@ import locations from "../assets/locations";
 import { FaSearch } from "react-icons/fa";
 import config from "../config";
 import SearchResults from "./SearchResults";
-import { CityObject } from "./types";
+import { Location } from "./types";
 
 interface SearchBarProps {
-    setFilteredCities: React.Dispatch<React.SetStateAction<any[]>>;
+    setFilteredLocations: React.Dispatch<React.SetStateAction<Location[]>>;
 }
 
-const SearchBar = ({setFilteredCities} : SearchBarProps) => {
+const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
     const[input, setInput] = useState("");
-    const[searchResults, setSearchResults] = useState <CityObject[]>([]);
+    const[searchResults, setSearchResults] = useState <Location[]>([]);
     const searchContainerRef = useRef<HTMLDivElement>(null);
 
-
-    //Geocoding API - max 60 calls per minute, max 1000 a day
-    const fetchData = async (value: string) => { 
-        try {
-            const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=Toronto&limit=5&appid=${config.apiKey}`)
-            const data = await response.json();
-            console.log (data);
-        }
-        catch (error){
-            console.error('Error fetching search results', error);
-        }
-    };
-
-    
-    type CityMapping = Record<string, string[]>;  
+    // type CityMapping = Record<string, string[]>;  
       
-    function filterCities(locations: CityMapping, input: string): CityObject[] { 
-        const filteredCities: CityObject[] = [];
+    function filterLocations(locations: Location[], input: string): Location[] { 
+        const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase())
+        );
       
-        Object.entries(locations).forEach(([country, cityList]) => {
-          const filteredCityList = cityList.filter(city => city.toLowerCase().startsWith(input));
-            filteredCityList.forEach(  city => {filteredCities.push({ city, country })}  );
-        });
+        setFilteredLocations(filteredLocations); //updates state
+        return filteredLocations;
         
-        setFilteredCities(filteredCities); //updates state
-        return filteredCities;
-        
-    }
+      }
 
 
     const handleSearchChange = (eventTargetValue: string) => {
@@ -56,16 +38,12 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
           }
       
           if (eventTargetValue.length > 1) {
-            const filteredCities = filterCities(
-              locations as CityMapping,
-              eventTargetValue.toLowerCase()
-            );
-            setSearchResults(filteredCities);
-          }
-       
-        // fetchData(value) 
+            const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
+            setSearchResults(filteredLocations);
+          } 
     }
 
+    //makes results dissapear on outside focus
     const handleClickOutside = (event: MouseEvent) => {
         if (
           searchContainerRef.current &&
@@ -81,8 +59,10 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
       }, []);
 
 
+    //logs search results
     useEffect(() => {console.log(searchResults);}, [searchResults]);
 
+    //input form
     return (
         <>
             <div ref={searchContainerRef} className="search-bar-container">
@@ -94,7 +74,7 @@ const SearchBar = ({setFilteredCities} : SearchBarProps) => {
                     </div>
                 </form>
 
-                {searchResults.length > 0 && (<SearchResults filteredResults={searchResults} />)}
+                {searchResults.length > 0 && (<SearchResults filteredLocations={searchResults} />)}
             </div>
                 
         </>

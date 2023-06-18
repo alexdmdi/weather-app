@@ -1,14 +1,57 @@
+import config from "../config";
+import { Location } from "./types"
+
+
 interface SearchResultsProps {
-    filteredResults: { city: string; country: string }[];
+    filteredLocations: Location[];
+    // onCityClick: (city: CityObject) => void;
 }
 
-const SearchResults = ( {filteredResults} : SearchResultsProps) => {
+
+function handleClick(location: Location){
+  console.log(location.name); //prints Toronto for example, in console if that's what is pressed on
+  fetchData(location);
+}
+
+//Geocoding API - max 60 calls per minute, max 1000 a day
+const fetchData = async (location: Location) => { 
+  try {
+      const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.name}&limit=5&appid=${config.apiKey}`)
+      const data = await response.json();
+      console.log('Fetch Data response: ');
+      console.log (data);
+      fetchForeCast(location);
+  }
+  catch (error){
+      console.error('Error fetching search results');
+  }
+};
+
+//Tries to fetch 5 day forecast from openweather
+const fetchForeCast = async (location: Location) =>{
+  try {
+      //const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${config.apiKey}`)
+      // const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d5ab50cc03c82a8e33102cf3b918dee`);
+      const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?id=${location.id}&appid=${config.apiKey}`);
+      const weatherData = await weatherResponse.body;
+      console.log (weatherData);
+  }
+
+  catch (error){
+    console.error('Error fetching forecast data');
+  }
+
+
+}
+
+const SearchResults = ( {filteredLocations} : SearchResultsProps) => {
+
     return (
         <div className="search-results mt-2">
           <ul className="list-group contentBox">
-            {filteredResults.map((result, index) => (
-              <li key={index} onClick={() => {}} className="list-group-item list-group-item-action fs-6">
-                {`${result.city}, ${result.country}`}
+            {filteredLocations.map((location, index) => (
+              <li key={index} onClick={(e) => {handleClick(location)}} className="list-group-item list-group-item-action fs-6">
+                 {`${location.name}${location.state ? `, ${location.state}` : ""}, ${location.country}`}
               </li>
             ))}
           </ul>
