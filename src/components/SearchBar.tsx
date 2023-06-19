@@ -1,7 +1,7 @@
 import React, {useState, ChangeEvent, useEffect, useRef} from "react";
 
 import styles from '../App.css';
-import locations from "../assets/Locations";
+import locations from "../assets/locations";
 import { FaSearch } from "react-icons/fa";
 import config from "../config";
 import SearchResults from "./SearchResults";

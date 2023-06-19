@@ -33,7 +33,7 @@ function App() {
           <div className="col pt-3 pb-3 search-bar-container p-0">
             <div className="fs-4 contentBox p-1 rounded">
               <div className="search-container">
-                  <Suspense fallback={<div className="text-light fs-5">Loading...</div>}>
+                  <Suspense fallback={<div className="fs-5">Loading...</div>}>
                     <SearchBar setFilteredLocations={setFilteredLocations} onLocationSelect={setSelectedLocation} />  
                   </Suspense>
               </div>
