@@ -48,16 +48,18 @@ const Weather = ( {selectedLocation }: WeatherProps) =>
   return(
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
         <div className="col-xl-1 t"></div>
-        <div className="col pt-3 pb-5 ms-4">
+        <div className="col pt-3 pb-5 ms-3 me-3">
           
           {weatherData ? (
-            <>
+            <div className = "text-start">
               <h2 className="display-3"> 
-              {Math.round(weatherData.list[0].main.temp)} <span><sup>°C</sup></span> 
+                {Math.round(weatherData.list[0].main.temp)}<sup>°C</sup> 
               </h2>
-              <h3 className="fs-4">{`${selectedLocation?.name}, ${selectedLocation?.country}`}</h3>
-              blah blah blah blah 
-            </>
+              <h3 className="fs-4">
+                {`${selectedLocation?.name}, ${selectedLocation?.country}`}
+              </h3>
+              {`blah ${2} ${2} ${3}`} 
+            </div>
             ) : (<div>Loading weather from openweather...</div>)
           }
           

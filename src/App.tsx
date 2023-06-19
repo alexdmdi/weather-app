@@ -30,7 +30,7 @@ function App() {
 
         <div className="row text-center">
           <div className="col-xl-3 col-md-2 col-sm-1"></div>
-          <div className="col pt-3 pb-3 search-bar-container p-0">
+          <div className="col pt-3 pb-4 search-bar-container p-0">
             <div className="fs-4 contentBox p-1 rounded">
               <div className="search-container">
                   <Suspense fallback={<div className="fs-5">Loading...</div>}>
@@ -40,17 +40,23 @@ function App() {
             </div>
           </div>
           <div className="col-xl-3 col-md-2 col-sm-1"></div>
+        
         </div>
 
-        <Weather selectedLocation={selectedLocation} />
+        <div className="row">
+          <div className="col-xl-2 col-md-2 col-sm-1">   </div>
+          <div className="col">
+            <Weather selectedLocation={selectedLocation} />
 
-        <div className="row border rounded ms-0 me-0">
-          <FutureForecast />
+            <div className="row border rounded ms-0 me-0">
+              <FutureForecast />
+            </div>    
+          </div>
+          <div className="col-xl-2 col-md-2 col-sm-1">   </div>
         </div>
-
+        
       </div>
 
-      
     </>
   );
 }
