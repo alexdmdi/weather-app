@@ -8,8 +8,7 @@ interface SearchResultsProps {
 
 
 const SearchResults = ( {filteredLocations, onLocationSelect} : SearchResultsProps) => {
-
-    return (
+  return (
         <div className="search-results mt-2">
           <ul className="list-group contentBox">
             {filteredLocations.map((location, index) => (
@@ -19,7 +18,7 @@ const SearchResults = ( {filteredLocations, onLocationSelect} : SearchResultsPro
             ))}
           </ul>
         </div>
-      );
+  );
 
 }
 

@@ -18,7 +18,6 @@ const Weather = ( {selectedLocation }: WeatherProps) =>
       try {
         console.log(` location id is: ${selectedLocation.id}`)
         const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${selectedLocation.id}&appid=${config.apiKey}&units=metric`);
-        console.log ('Weather response', weatherResponse);
         
         if (!weatherResponse.ok){
           throw new Error('Weather data request failed');

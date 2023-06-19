@@ -7,8 +7,6 @@ import React, { useState, Suspense } from "react";
 import NavBar from './components/Navbar'
 import FutureForecast from './components/FutureForecast';
 import { Location } from "./components/types";
-// import SearchBar from './components/SearchBar';
-import SearchResults from './components/SearchResults';
 import Weather from "./components/Weather"
 import { WiDayCloudy } from "react-icons/wi";
 
@@ -18,7 +16,7 @@ function App() {
 
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]); // State variable to store filtered cities
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [showSearchBar, setShowSearchBar] = useState(false);  
+
   return (
     <>
       <div className="container">
