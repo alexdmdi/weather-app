@@ -12,7 +12,7 @@ const SearchResults = ( {filteredLocations, onLocationSelect} : SearchResultsPro
         <div className="search-results mt-2">
           <ul className="list-group contentBox">
             {filteredLocations.map((location, index) => (
-              <li key={index} onClick={(e) => onLocationSelect(location)} className="list-group-item list-group-item-action fs-6">
+              <li key={index} onClick={() => onLocationSelect(location)} className="list-group-item list-group-item-action fs-6">
                  {`${location.name}${location.state ? `, ${location.state}` : ""}, ${location.country}`}
               </li>
             ))}

@@ -15,7 +15,7 @@ const SearchBar = React.lazy( () => import ('./components/SearchBar'))
 function App() {
 
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]); // State variable to store filtered cities
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>({"id":6167865, "name":"Toronto", "state":"", "country":"CA"});
 
   return (
     <>
