@@ -30,14 +30,14 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
         console.log(`handleChange function called with with passed search query of ${eventTargetValue.toLowerCase()} and eventTargetValue.length is ${eventTargetValue.length}`)
 
         if (eventTargetValue.length <= 1) {
-            setSearchResults([]);
-            return;
+          setSearchResults([]);
+          return;
           }
       
-          if (eventTargetValue.length > 1) {
-            const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
+        if (eventTargetValue.length > 1) {
+          const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
             setSearchResults(filteredLocations);
-          } 
+        } 
     }
 
     const handleLocationSelect = (location: Location) => {
@@ -47,10 +47,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
 
     //makes results list dissapear on outside focus
     const handleClickOutside = (event: MouseEvent) => {
-        if (
-          searchContainerRef.current &&
-          !searchContainerRef.current.contains(event.target as Node)
-        ) {
+        if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
           setSearchResults([]);
         }
       };
