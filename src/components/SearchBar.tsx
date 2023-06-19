@@ -15,8 +15,6 @@ const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
     const[input, setInput] = useState("");
     const[searchResults, setSearchResults] = useState <Location[]>([]);
     const searchContainerRef = useRef<HTMLDivElement>(null);
-
-    // type CityMapping = Record<string, string[]>;  
       
     function filterLocations(locations: Location[], input: string): Location[] { 
         const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase())

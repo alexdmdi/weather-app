@@ -31,8 +31,6 @@ const fetchLocations = async (location: Location) => {
 //Tries to fetch 5 day forecast from openweather
 const fetchForeCast = async (location: Location) =>{
   try {
-      //const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${config.apiKey}`)
-      // const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d5ab50cc03c82a8e33102cf3b918dee`);
       console.log(` location id is: ${location.id}`)
       const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${location.id}&appid=${config.apiKey}&units=metric`);
       const weatherData = await weatherResponse.json();
