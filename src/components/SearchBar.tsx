@@ -9,21 +9,20 @@ import { Location } from "./types";
 
 interface SearchBarProps {
     setFilteredLocations: React.Dispatch<React.SetStateAction<Location[]>>;
+    onLocationSelect: (location: Location) => void;
 }
 
-const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
+const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) => {
     const[input, setInput] = useState("");
     const[searchResults, setSearchResults] = useState <Location[]>([]);
     const searchContainerRef = useRef<HTMLDivElement>(null);
       
     function filterLocations(locations: Location[], input: string): Location[] { 
-        const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase())
-        );
+        const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase()));
       
         setFilteredLocations(filteredLocations); //updates state
         return filteredLocations;
-        
-      }
+    }
 
 
     const handleSearchChange = (eventTargetValue: string) => {
@@ -41,7 +40,12 @@ const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
           } 
     }
 
-    //makes results dissapear on outside focus
+    const handleLocationSelect = (location: Location) => {
+      console.log(location.name, location.country);
+      onLocationSelect(location)// pass selected location to parent component
+    }
+
+    //makes results list dissapear on outside focus
     const handleClickOutside = (event: MouseEvent) => {
         if (
           searchContainerRef.current &&
@@ -62,7 +66,7 @@ const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
       }
     
     
-      //logs search results
+      //logs search results that should appear in pop up list
     // useEffect(() => {console.log(searchResults);}, [searchResults]);
 
     //input form
@@ -77,7 +81,7 @@ const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
                     </div>
                 </form>
 
-                {searchResults.length > 0 && (<SearchResults filteredLocations={searchResults} />)}
+                {searchResults.length > 0 && (<SearchResults filteredLocations={searchResults} onLocationSelect={handleLocationSelect} />)}
             </div>
                 
         </>
