@@ -59,14 +59,19 @@ const SearchBar = ({setFilteredLocations} : SearchBarProps) => {
       }, []);
 
 
-    //logs search results
-    useEffect(() => {console.log(searchResults);}, [searchResults]);
+      const handleFormSubmit = (event: React.FormEvent) => {
+        event.preventDefault(); //prevents default form submission
+      }
+    
+    
+      //logs search results
+    // useEffect(() => {console.log(searchResults);}, [searchResults]);
 
     //input form
     return (
         <>
             <div ref={searchContainerRef} className="search-bar-container">
-                <form>
+                <form onSubmit = {handleFormSubmit}>
                     <div className="form-group d-flex align-items-center">
                         {/* <label htmlFor="formGroupExampleInput"></label> */}
                         <input type="text" id="searchInput" autoComplete="off" className="form-control text-center" value={input} onChange={ (e) => handleSearchChange(e.target.value) } placeholder="Search for location"/>

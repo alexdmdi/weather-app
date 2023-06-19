@@ -10,11 +10,12 @@ interface SearchResultsProps {
 
 function handleClick(location: Location){
   console.log(location.name); //prints Toronto for example, in console if that's what is pressed on
-  fetchData(location);
+  //fetchLocations(location);
+  fetchForeCast(location)
 }
 
 //Geocoding API - max 60 calls per minute, max 1000 a day
-const fetchData = async (location: Location) => { 
+const fetchLocations = async (location: Location) => { 
   try {
       const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.name}&limit=5&appid=${config.apiKey}`)
       const data = await response.json();
@@ -32,13 +33,18 @@ const fetchForeCast = async (location: Location) =>{
   try {
       //const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${config.apiKey}`)
       // const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d5ab50cc03c82a8e33102cf3b918dee`);
-      const weatherResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?id=${location.id}&appid=${config.apiKey}`);
-      const weatherData = await weatherResponse.body;
+      console.log(` location id is: ${location.id}`)
+      const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${location.id}&appid=${config.apiKey}&units=metric`);
+      const weatherData = await weatherResponse.json();
       console.log (weatherData);
+
+      if (!weatherResponse.ok){
+        throw new Error('Weather data request failed');
+      }
   }
 
   catch (error){
-    console.error('Error fetching forecast data');
+    console.error('Error fetching forecast data', (error as Error).message);
   }
 
 
