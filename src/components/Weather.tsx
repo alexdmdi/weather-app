@@ -47,24 +47,49 @@ const Weather = ( {selectedLocation }: WeatherProps) =>
 
   return(
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
-        <div className="col-xl-1 t"></div>
-        <div className="col pt-3 pb-5 ms-3 me-3">
+        {/* <div className="col-xl-1 t"></div> */}
+        
+        <div className="col-5 pt-3 pb-4 ms-0 border-end border-1 border-light">
           
           {weatherData ? (
-            <div className = "text-start">
-              <h2 className="display-3"> 
+            <div className = "text-center">
+              <h2 className="display-3 mb-0"> 
                 {Math.round(weatherData.list[0].main.temp)}<sup>°C</sup> 
               </h2>
-              <h3 className="fs-4">
+              <p>{`Feels like ${Math.round(weatherData.list[0].main.feels_like)}`}°C</p>
+              <h3 className="fs-4 text-info">
                 {`${selectedLocation?.name}, ${selectedLocation?.country}`}
               </h3>
-              {`blah ${2} ${2} ${3}`} 
+              {`Humidity: ${weatherData.list[0].main.humidity}%`} 
             </div>
             ) : (<div>Loading weather from openweather...</div>)
           }
           
         </div>
-        <div className="col-xl-1"></div>
+
+        <div className="col pt-3 pb-2 ms-0 me-0">
+          
+          {weatherData ? (
+            <div className = "text-center mt-4 mb-2">
+              <h2 className= "fs-2 mb-3"> 
+                {(`icon here`)}
+              </h2>
+              
+              <h3 className="fs-5 pb-2">
+                {`${weatherData.list[0].weather[0].description}`}
+              </h3>
+
+              <p className="mb-0 pb-0 mt-3"> {`Min: ${Math.round(weatherData.list[0].main.temp_min)}°C`}  </p>
+              <p className="mb-0 pb-0"> {`Max: ${Math.round(weatherData.list[0].main.temp_max)}°C`}  </p>
+                            
+            </div>
+            ) : (<div>Loading...</div>)
+          }
+          
+        </div>
+
+
+        {/* <div className="col-xl-1"></div> */}
       </div>
   )
 
