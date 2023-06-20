@@ -14,14 +14,19 @@ const SearchBar = React.lazy( () => import ('./components/SearchBar'))
 
 function App() {
 
-  const [filteredLocations, setFilteredLocations] = useState<Location[]>([]); // State variable to store filtered cities
+  const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>({"id":6167865, "name":"Toronto", "state":"", "country":"CA"});
+  const [weatherData, setWeatherData] = useState<any>(null);
+
+  const updateWeatherData = (data: object) => {
+    setWeatherData(data);
+  }
 
   return (
     <>
       <div className="container">
         <NavBar />
-        <h1 className="display-5 fw-normal text-center mb-2">
+        <h1 className="display-5 fw-normal text-center mb-2 ">
           Weather Forecast
           <div className="ico-WiDayCloudy">
             <WiDayCloudy size='1.5em' />
@@ -46,10 +51,10 @@ function App() {
         <div className="row">
           <div className="col-xl-2 col-md-2 col-sm-1">   </div>
           <div className="col">
-            <Weather selectedLocation={selectedLocation} />
+            <Weather selectedLocation={selectedLocation} updateWeatherData={updateWeatherData} />
 
             <div className="row border rounded ms-0 me-0">
-              <FutureForecast />
+              <FutureForecast weatherData={ weatherData} />
             </div>    
           </div>
           <div className="col-xl-2 col-md-2 col-sm-1">   </div>
@@ -64,5 +69,5 @@ function App() {
 export default App
 
 //NOTES:
-//line 36 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
+//line 37 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
 //line 38 uses react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle

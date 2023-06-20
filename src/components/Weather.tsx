@@ -3,14 +3,13 @@ import styles from '../App.css';
 import config from "../config"
 import { Location } from "./types";
 
-
 interface WeatherProps {
   selectedLocation: Location | null;
-
+  updateWeatherData: (data: object) => void; //specifies that updateWeatherData is a function that takes an object as an argument and returns nothing
 }
 
 
-const Weather = ( {selectedLocation }: WeatherProps) => 
+const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) => 
 {
   const [weatherData, setWeatherData] = useState<any>(null);
 
@@ -29,8 +28,8 @@ const Weather = ( {selectedLocation }: WeatherProps) =>
 
         const weatherData = await weatherResponse.json();
         console.log ('Weather data:', weatherData)
-        setWeatherData(weatherData);
-
+        setWeatherData(weatherData); 
+        updateWeatherData(weatherData);
         
       } 
       catch (error) {
