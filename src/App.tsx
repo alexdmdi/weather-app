@@ -34,7 +34,7 @@ function App() {
         </h1>
 
         <div className="row text-center">
-          <div className="col-xl-3 col-md-2 col-sm-1"></div>
+          <div className="col-xl-3 col-md-1"></div>
           <div className="col pt-3 pb-4 search-bar-container p-0">
             <div className="fs-4 contentBox p-1 rounded">
               <div className="search-container">
@@ -44,20 +44,20 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="col-xl-3 col-md-2 col-sm-1"></div>
+          <div className="col-xl-3 col-md-1"></div>
         
         </div>
 
         <div className="row">
-          <div className="col-xl-2 col-md-2 col-sm-1">   </div>
+          <div className="col-xl-2 col-md-1">   </div>
           <div className="col">
             <Weather selectedLocation={selectedLocation} updateWeatherData={updateWeatherData} />
 
-            <div className="row border rounded ms-0 me-0">
-              <FutureForecast weatherData={ weatherData} />
+            <div className="row border rounded ms-0 me-0 mb-5">
+              <FutureForecast weatherData={weatherData} />
             </div>    
           </div>
-          <div className="col-xl-2 col-md-2 col-sm-1">   </div>
+          <div className="col-xl-2 col-md-1">   </div>
         </div>
         
       </div>
@@ -69,5 +69,5 @@ function App() {
 export default App
 
 //NOTES:
-//line 37 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
-//line 38 uses react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
+//line 41 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
+//line 42 uses react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
