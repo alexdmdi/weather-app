@@ -12,22 +12,50 @@ interface WeatherProps {
 const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) => 
 {
   const [weatherData, setWeatherData] = useState<any>(null);
+  const [currentWeather, setCurrentWeather] = useState<any>(null);
+  const [currWeatherIcon, setCurrWeatherIcon] = useState<string>("");
 
   useEffect(() => {
-    const fetchForecast = async () => {
-      if (!selectedLocation) return;
+    const fetchCurrentWeather = async () => {
+      if(!selectedLocation) return;
 
-      //tries to get weather data for particular city based on its ID (ID-city data pairing all from openweaather)
+      //fetch current weather data for particular city
       try {
-        console.log(` location id is: ${selectedLocation.id}`)
-        const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${selectedLocation.id}&appid=${config.apiKey}&units=metric`);
+        console.log(`Location id for current weather is: ${selectedLocation.id}`)
+        const currentWeatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${selectedLocation.id}&appid=${config.apiKey}&units=metric`);
         
-        if (!weatherResponse.ok){
+        if (!currentWeatherResponse.ok){
           throw new Error('Weather data request failed');
         }
 
+        const currentWeatherData = await currentWeatherResponse.json();
+        console.log ('Current Weather data:', currentWeatherData)
+        setCurrentWeather(currentWeatherData); 
+
+        const currIconCode = currentWeather.weather[0].icon; //to be used to display appropiate icon for current weather
+        const currWeatherIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`
+        setCurrWeatherIcon(currWeatherIconURL);
+        
+      } 
+      catch (error) {
+        console.error("Error fetching current Weather data", (error as Error).message);
+      }
+    };
+    
+    const fetchForecast = async () => {
+      if (!selectedLocation) return;
+
+      //fetch forecast data for particular city
+      try {
+        console.log(`Location id for forecast fetch: ${selectedLocation.id}`)
+        const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${selectedLocation.id}&appid=${config.apiKey}&units=metric`);
+        
+        if (!weatherResponse.ok){
+          throw new Error('Weather/forecast data request failed');
+        }
+
         const weatherData = await weatherResponse.json();
-        console.log ('Weather data:', weatherData)
+        console.log ('Weather/forecast data:', weatherData)
         setWeatherData(weatherData); 
         updateWeatherData(weatherData);
         
@@ -37,49 +65,47 @@ const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) =>
       }
     };
 
+    fetchCurrentWeather();
     fetchForecast();
   }, [selectedLocation]);
-
-  // useEffect( () => {}), [weatherData];
-
 
 
   return(
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
-        {/* <div className="col-xl-1 t"></div> */}
         
-        <div className="col-5 pt-3 pb-4 ms-0 border-end border-1 border-light">
+        
+        <div className="col-5 pt-3 pb-3 ms-0 border-end border-1 border-light">
           
-          {weatherData ? (
+          {currentWeather ? (
             <div className = "text-center">
               <h2 className="display-3 mb-0"> 
-                {Math.round(weatherData.list[0].main.temp)}<sup>°C</sup> 
+                {Math.round(currentWeather.main.temp)}<sup>°C</sup> 
               </h2>
-              <p>{`Feels like ${Math.round(weatherData.list[0].main.feels_like)}`}°C</p>
-              <h3 className="fs-4 text-info">
+              <p>{`Feels like ${Math.round(currentWeather.main.feels_like)}`}°C</p>
+              <h3 className="fs-4 pt-2 text-info">
                 {`${selectedLocation?.name}, ${selectedLocation?.country}`}
               </h3>
-              {`Humidity: ${weatherData.list[0].main.humidity}%`} 
+              {`Humidity: ${currentWeather.main.humidity}%`} 
             </div>
             ) : (<div>Loading weather from openweather...</div>)
           }
           
         </div>
 
-        <div className="col pt-3 pb-2 ms-0 me-0">
+        <div className="col pt-3 pb-3 ms-0 me-0">
           
-          {weatherData ? (
-            <div className = "text-center mt-4 mb-2">
-              <h2 className= "fs-2 mb-3"> 
-                {(`icon here`)}
+          {currentWeather ? (
+            <div className = "text-center">
+              <h2 className= "weatherIcon fs-2 d-inline "> 
+                <img src={currWeatherIcon} alt="weather icon" className="mb-0 pb-0"/>
               </h2>
               
-              <h3 className="fs-5 pb-2">
-                {`${weatherData.list[0].weather[0].description}`}
-              </h3>
+              <div className="fs-4 pb-0">
+                {`${currentWeather.weather[0].description}`}
+              </div>
 
-              <p className="mb-0 pb-0 mt-3"> {`Min: ${Math.round(weatherData.list[0].main.temp_min)}°C`}  </p>
-              <p className="mb-0 pb-0"> {`Max: ${Math.round(weatherData.list[0].main.temp_max)}°C`}  </p>
+              <p className="mb-0 pb-0 mt-2"> {`Min: ${Math.round(currentWeather.main.temp_min)}°C`}  </p>
+              <p className="mb-0 pb-3"> {`Max: ${Math.round(currentWeather.main.temp_max)}°C`}  </p>
                             
             </div>
             ) : (<div>Loading...</div>)
@@ -87,8 +113,6 @@ const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) =>
           
         </div>
 
-
-        {/* <div className="col-xl-1"></div> */}
       </div>
   )
 
