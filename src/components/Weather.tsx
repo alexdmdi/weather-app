@@ -5,13 +5,13 @@ import { Location } from "./types";
 
 interface WeatherProps {
   selectedLocation: Location | null;
-  updateWeatherData: (data: object) => void; //specifies that updateWeatherData is a function that takes an object as an argument and returns nothing
+  updateForecastData: (data: object) => void; //specifies that updateWeatherData is a function that takes an object as an argument and returns nothing
 }
 
 
-const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) => 
+const Weather = ( {selectedLocation, updateForecastData }: WeatherProps) => 
 {
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [forecastData, setForecastData] = useState<any>(null);
   const [currentWeather, setCurrentWeather] = useState<any>(null);
   const [currWeatherIcon, setCurrWeatherIcon] = useState<string>("");
 
@@ -28,13 +28,13 @@ const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) =>
           throw new Error('Weather data request failed');
         }
 
-        const currentWeatherData = await currentWeatherResponse.json();
-        console.log ('Current Weather data:', currentWeatherData)
-        setCurrentWeather(currentWeatherData); 
+        const currResponseData = await currentWeatherResponse.json();
+        console.log ('Current Weather data:', currResponseData)
+        setCurrentWeather(currResponseData); 
 
-        const currIconCode = currentWeather.weather[0].icon; //to be used to display appropiate icon for current weather
-        const currWeatherIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`
-        setCurrWeatherIcon(currWeatherIconURL);
+        const currIconCode = currResponseData.weather[0].icon; //to be used to display appropiate icon for current weather
+        const currIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`
+        setCurrWeatherIcon(currIconURL);
         
       } 
       catch (error) {
@@ -51,13 +51,13 @@ const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) =>
         const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${selectedLocation.id}&appid=${config.apiKey}&units=metric`);
         
         if (!weatherResponse.ok){
-          throw new Error('Weather/forecast data request failed');
+          throw new Error('Forecast data request failed');
         }
 
-        const weatherData = await weatherResponse.json();
-        console.log ('Weather/forecast data:', weatherData)
-        setWeatherData(weatherData); 
-        updateWeatherData(weatherData);
+        const forecastData = await weatherResponse.json();
+        console.log ('Forecast data:', forecastData)
+        setForecastData(forecastData); 
+        updateForecastData(forecastData);
         
       } 
       catch (error) {
@@ -74,7 +74,7 @@ const Weather = ( {selectedLocation, updateWeatherData }: WeatherProps) =>
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
         
         
-        <div className="col-5 pt-3 pb-3 ms-0 border-end border-1 border-light">
+        <div className="col-5 d-flex align-items-center justify-content-center border-end border- border-light">
           
           {currentWeather ? (
             <div className = "text-center">
