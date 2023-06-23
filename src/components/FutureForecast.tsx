@@ -1,101 +1,343 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface FutureForecastProps {
-    weatherData: any;
+    forecastData: any;
 }
+interface DayData {
+    date: Date;
+    dayOfWeek: string;
+    MonthName: string;
+    day: number;
+    weatherList: any[];
+    minTemp: number
+    maxTemp: number;
+    maxHumidity: number;
+    morningIconURL : string
+    afternoonIconURL : string
+    eveningIconURL : string
+    nightIconURL : string
+  }
 
-function FutureForecast( {weatherData}: FutureForecastProps) {
+function FutureForecast( {forecastData}: FutureForecastProps) {
     
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
+    //gets current date based on users location through browser/computer
     const getCurrentDate = () => {
-        const today = new Date();
-        const currentMonthName: string = monthNames[today.getMonth()];
-        const currentDayOfWeek: string = weekdayNames[today.getDay()];
+        const todayDateObj = new Date(new Date().setHours(0,0,0,0)); //initializes new date for today with hour set at midnight 
+        // console.log(`todayDateObj is: ${todayDateObj}`)
+        const currentMonthName: string = monthNames[todayDateObj.getMonth()];
+        const currentDayOfWeek: string = weekdayNames[todayDateObj.getDay()];
 
-        const currentDateObject = {today, currentMonthName, currentDayOfWeek}
+        const currentDateObject = {todayDateObj, currentMonthName, currentDayOfWeek}
         return currentDateObject;
     }
+    const currentDate = getCurrentDate();
+    console.log(`current date from local pc based is: ${currentDate.todayDateObj}`)
 
-    //offset of 1 means tomorrow, one day after the currentDate, passing 2 means 2 days after today, etc
-    const getFollowingDate = (dayOffset: number) => {
-        if (dayOffset < 7){
-            const date = new Date(getCurrentDate().today);
-            date.setDate(date.getDate() + dayOffset);
+    //passing an offset of 1 means tomorrow, one day after currentDate, passing 2 is for after tomorrow, etc
+    const getDateInfo = (dayOffset: number) => {
+        if (dayOffset <= 5){
             
-            const day: number = date.getDate()
-            const MonthName: string = monthNames[date.getMonth()];
-            const dayOfWeek: string = weekdayNames[date.getDay()];
+            //initialize by setting as current date object
+            const dateObj = new Date(getCurrentDate().todayDateObj);
+            
+            //dateObj now contains the right data for the specified following day
+            dateObj.setDate(dateObj.getDate() + dayOffset);
+            
+            const day: number = dateObj.getDate()
+            const MonthName: string = monthNames[dateObj.getMonth()];
+            const dayOfWeek: string = weekdayNames[dateObj.getDay()];
 
-            const dateObject = {day, MonthName, dayOfWeek}
+            const dateObject = {dateObj, day, MonthName, dayOfWeek}
             return dateObject;
         }
         else {
-            throw new Error (`dayOffset can be a maximum of 6`)
+            throw new Error (`dayOffset can be a maximum of 5`)
         }
     
     }
 
+    //initialize forecast days, only contains date info at first
+    const followingDays: Record<string, DayData> = {
+        "day1": {
+            "date": getDateInfo(1).dateObj, 
+            "dayOfWeek": getDateInfo(1).dayOfWeek, 
+            "MonthName": getDateInfo(1).MonthName, 
+            "day": getDateInfo(1).day,
+            "weatherList": [],
+            "minTemp": -100,
+            "maxTemp" : -100,
+            "maxHumidity" : 0,
+            "morningIconURL" : "",
+            "afternoonIconURL" : "",
+            "eveningIconURL" : "",
+            "nightIconURL" : ""
+        }, 
 
-    return(
-        <>
+        "day2": {
+            "date": getDateInfo(2).dateObj, 
+            "dayOfWeek": getDateInfo(2).dayOfWeek, 
+            "MonthName": getDateInfo(2).MonthName, 
+            "day": getDateInfo(2).day,
+            "weatherList": [],
+            "minTemp": -100,
+            "maxTemp" : -100,
+            "maxHumidity" : 0,
+            "morningIconURL" : "",
+            "afternoonIconURL" : "",
+            "eveningIconURL" : "",
+            "nightIconURL" : ""
             
+        },
+
+        "day3": {
+            "date": getDateInfo(3).dateObj,
+            "dayOfWeek": getDateInfo(3).dayOfWeek,
+            "MonthName": getDateInfo(3).MonthName, 
+            "day": getDateInfo(3).day,
+            "weatherList": [],
+            "minTemp": -100,
+            "maxTemp" : -100,
+            "maxHumidity" : 0,
+            "morningIconURL" : "",
+            "afternoonIconURL" : "",
+            "eveningIconURL" : "",
+            "nightIconURL" : ""
+        }, 
+
+        "day4": {
+            "date": getDateInfo(4).dateObj, 
+            "dayOfWeek": getDateInfo(4).dayOfWeek, 
+            "MonthName": getDateInfo(4).MonthName, 
+            "day": getDateInfo(4).day,
+            "weatherList": [],
+            "minTemp": -100,
+            "maxTemp" : -100,
+            "maxHumidity" : 0,
+            "morningIconURL" : "",
+            "afternoonIconURL" : "",
+            "eveningIconURL" : "",
+            "nightIconURL" : ""
+        }, 
+
+        "day5": {
+            "date": getDateInfo(5).dateObj, 
+            "dayOfWeek": getDateInfo(5).dayOfWeek, 
+            "MonthName": getDateInfo(5).MonthName, 
+            "day": getDateInfo(5).day,
+            "weatherList": [],
+            "minTemp": -100,
+            "maxTemp" : -100,
+            "maxHumidity" : 0,
+            "morningIconURL" : "",
+            "afternoonIconURL" : "",
+            "eveningIconURL" : "",
+            "nightIconURL" : ""
+        }
+    }
+
+
+    if (forecastData){
+
+        //populates weatherList in followingDays object, once api response is complete
+        forecastData.list.forEach((listItem: any) => {
+            
+            const unixEpochTimeMS: number = listItem.dt * 1000; 
+            const dateObj: Date = new Date(unixEpochTimeMS);
+            // console.log(`api listItem date ${dateObj}`)
+
+            if (dateObj.toDateString() === currentDate.todayDateObj.toDateString())
+            {
+                return;
+            }
+            (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach((key) => {
+                if (dateObj.toDateString() === followingDays[key].date.toDateString())
+                {
+        
+                    followingDays[key].weatherList.push(listItem);
+                }
+            })
+        })
+
+        //sets max temp and max humidity for each of the following days, once api response is complete and weatherlist has been populated
+        //then populates icon URLs for each day
+        if (forecastData && followingDays.day1.weatherList.length > 0){
+            (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach ((day) => {
+                let minTemp = 100;
+                let maxTemp = -100;
+                let maxHumidity = 0;
+                followingDays[day].weatherList.forEach((listItem: any) => {
+                    
+                    if (listItem.main.temp_min < minTemp)
+                    {
+                        minTemp = listItem.main.temp_min;
+                    }
+                    if (listItem.main.temp_max > maxTemp)
+                    {
+                        maxTemp = listItem.main.temp_max;
+                    }
+                    if (listItem.main.humidity > maxHumidity)
+                    {
+                        maxHumidity = listItem.main.humidity;
+                    }
+                })
+                followingDays[day].minTemp = minTemp;
+                followingDays[day].maxTemp = maxTemp;
+                followingDays[day].maxHumidity = maxHumidity;
+            });
+
+            (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach ((day) => { 
+                followingDays[day].morningIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[3].weather[0].icon}@2x.png`
+                followingDays[day].afternoonIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[4].weather[0].icon}@2x.png`
+                // followingDays[day].eveningIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[5].weather[0].icon}@2x.png`
+                // followingDays[day].nightIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[6].weather[0].icon}@2x.png`
+
+            
+            });
+
+        
+        }
+        else{
+            console.log(`missing weatherlist forecast data`);
+        }
+
+        //prints out final followingDays object (length 5)
+        console.log(followingDays);
+    }
+
+    // const scrollableComponent = () => {
+    //     const scrollbarRef = useRef(null);
+    //     useEffect(() => {
+    //         const scrollbarElement = scrollbarRef.current;
+        
+    //         if (scrollbarElement) {
+    //           scrollbarElement.addEventListener('wheel', handleWheel);
+    //         }
+        
+    //         return () => {
+    //           if (scrollbarElement) {
+    //             scrollbarElement.removeEventListener('wheel', handleWheel);
+    //           }
+    //         };
+    //       }, []);
+        
+    //       const handleWheel = (event: WheelEvent) => {
+    //         const { deltaY } = event;
+        
+    //         if (scrollbarRef.current) {
+    //           scrollbarRef.current.scrollLeft += deltaY;
+    //         }
+    //       };
+    
+    // }
+    
+
+    const handleMouseEnter = () => {
+        document.body.classList.add('no-scrollbar');
+      };
+    
+      const handleMouseLeave = () => {
+        document.body.classList.remove('no-scrollbar');
+      };
+
+
+
+
+    return( 
             <div className="accordion accordion-flush p-0" id="accordionFlushExample">
                 
                 <div className="accordion-item">
                     <h2 className="accordion-header">
                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            {`${getFollowingDate(2).dayOfWeek}, ${getFollowingDate(2).MonthName} ${getFollowingDate(2).day} `}
+                            {`${followingDays.day1.dayOfWeek}, ${followingDays.day1.MonthName} ${followingDays.day1.day} `}
                         </button>
                     </h2>
                     <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body pt-0 pb-0"> 
+                        <div className="accordion-body p-0"> 
                             
-                            <div className="row ms-2 me-2 align-self-center">
-                                <div className="col-3">
-                                    <p className="display-6 pt-3 pb-3">
-                                        {weatherData? `${Math.round(weatherData.list[1].main.temp)}°C` : "Data not available"}
-                                    </p>
-                                    Will feel like:
-                                    <p className="fs-5">
-                                        {weatherData? `${Math.round(weatherData.list[1].main.feels_like)}°C` : ""}
-                                    </p>
+                            <div className="row ms-0 me-0">
+                                <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-light border-1 border-end ">
+                                    
+                                    <div className="row ms-2">
+                                        Max:
+                                    </div>
+                                    <div className="row display-6 pb-2 ms-2">
+                                        {forecastData? `${Math.round(followingDays.day1.maxTemp)}°C` : "Not available"}
+                                    </div>
+
+                                    <div className="row ms-2">
+                                        Min:
+                                    </div>
+                                    <div className="row fs-4 pb-2 ms-2">
+                                        {forecastData? `${Math.round(followingDays.day1.minTemp)}°C` : "Not available"}
+                                    </div>
+
+                                    <div className="row ms-2">
+                                        Max Humidity:
+                                    </div>
+                                    <div className="row fs-5 ms-2">
+                                        {forecastData? `${Math.round(followingDays.day1.maxHumidity)}%` : "N/A"}
+                                    </div>
 
                                 </div>
-                                    
 
-                                
-                                <div className="col ms-2 me-2 align-self-center pt-3 border-end border-light">
-                                    <div className="row">Humidity:</div>
-                                    <div className="row">
-                                        <p className="fs-5 ps-0 d-flex">
-                                        {weatherData? `${Math.round(weatherData.list[1].main.humidity)}%` : "N/A"}
-                                        </p>
+                                <div className="col text-center d-flex overflow-x-scroll horizontalScroll" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                    <div className="row flex-nowrap">
+                                        
+                                        <div className="col border-end border-light" id="morning">
+                                            <div className="fs-5">
+                                                <div className="fs-5 pt-2">
+                                                    Morning
+                                                </div>
+                                            <div className="mt-4 mb-2">
+                                                <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
+                                            </div>
+                                                {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
+                                            </div>  
+                                        </div>
+
+                                        <div className="col border-end border-light" id="afternoon">
+                                            <div className="fs-5">
+                                                    <div className="fs-5 pt-2">
+                                                        Afternoon
+                                                    </div>
+                                                <div className="mt-4 mb-2">
+                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
+                                                </div>
+                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
+                                                </div>  
+                                        </div>
+
+                                        <div className="col border-end border-light" id="evening">
+                                            <div className="fs-5">
+                                                    <div className="fs-5 pt-2">
+                                                        Evening
+                                                    </div>
+                                                <div className="mt-4 mb-2">
+                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
+                                                </div>
+                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
+                                                </div>  
+                                        </div>
+
+                                        <div className="col" id="night">
+                                            <div className="fs-5">
+                                                    <div className="fs-5 pt-2">
+                                                        Night
+                                                    </div>
+                                                <div className="mt-4 mb-2">
+                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
+                                                </div>
+                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
+                                                </div>  
+                                        </div>
+
                                     </div>
-
-                                    <div className="row">Min:</div>
-                                    <div className="row ">
-                                        <p className="fs-6 mb-1 ps-0 d-flex">
-                                            {weatherData? `${Math.round(weatherData.list[1].main.temp_min)}°C` : "N/A"}
-                                        </p>
-                                    </div>
-                                    
-                                
-                                    <div className="row">Max:</div>
-                                    <div className="row">
-                                        <p className="fs-6 mb-1 ps-0 pb-3 d-flex">
-                                            {weatherData? `${Math.round(weatherData.list[1].main.temp_max)}°C` : "N/A"}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="col ms-2 me-2 align-self-center pt-3">
-                                    yo
-
+                                      
                                 </div>
                             </div>
-                           
                             
                         </div>
                     </div>
@@ -104,50 +346,142 @@ function FutureForecast( {weatherData}: FutureForecastProps) {
                 <div className="accordion-item">
                     <h2 className="accordion-header">
                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        {`${getFollowingDate(3).dayOfWeek}, ${getFollowingDate(3).MonthName} ${getFollowingDate(3).day} `}
+                            {`${followingDays.day2.dayOfWeek}, ${followingDays.day2.MonthName} ${followingDays.day2.day} `}
                         </button>
                     </h2>
-                    <div id="flush-collapse2" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">Placeholder content for this accordion</div>
+                    <div id="flush-collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body p-0"> 
+                            
+                        <div className="row ms-4 me-4">
+                                <div className="col-5 border-light border-end pt-2 pb-2">
+                                    Max:
+                                    <div className="display-6 pb-2 ">
+                                        {forecastData? `${Math.round(followingDays.day2.maxTemp)}°C` : "Not available"}
+                                    </div>
+                                    Max Humidity:
+                                    <div className="fs-5 d-flex">
+                                        {forecastData? `${Math.round(followingDays.day2.maxHumidity)}%` : "N/A"}
+                                    </div>
+
+                                </div>
+
+                                <div className="col text-center align-self-center">
+                                    <div className="fs-1">icon here</div>
+                                    <div className="fs-4">
+                                        {forecastData? `${followingDays.day2.weatherList[0].weather[0].description}` : "N/A"}
+                                    </div>    
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
 
                 <div className="accordion-item">
                     <h2 className="accordion-header">
                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        {`${getFollowingDate(4).dayOfWeek}, ${getFollowingDate(4).MonthName} ${getFollowingDate(4).day} `}
+                            {`${followingDays.day3.dayOfWeek}, ${followingDays.day3.MonthName} ${followingDays.day3.day} `}
                         </button>
                     </h2>
-                    <div id="flush-collapse3" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">Placeholder content for this accordion</div>
+                    <div id="flush-collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body p-0"> 
+                            
+                            <div className="row ms-4 me-4">
+                                <div className="col-5 border-light border-end pt-2 pb-2">
+                                    Max:
+                                    <div className="display-6 pb-2 ">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.temp_max)}°C` : "Not available"}
+                                    </div>
+                                    Humidity:
+                                    <div className="fs-5 d-flex">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.humidity)}%` : "N/A"}
+                                    </div>
+
+                                </div>
+
+                                <div className="col text-center align-self-center">
+                                    <div className="fs-1">icon here</div>
+                                    <div className="fs-4">
+                                        {forecastData? `${forecastData.list[1].weather[0].description}` : "N/A"}
+                                    </div>    
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
 
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        {`${getFollowingDate(5).dayOfWeek}, ${getFollowingDate(5).MonthName} ${getFollowingDate(5).day} `}
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                            {`${followingDays.day4.dayOfWeek}, ${followingDays.day4.MonthName} ${followingDays.day4.day} `}
                         </button>
                     </h2>
-                    <div id="flush-collapse4" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">Placeholder content for this accordion</div>
+                    <div id="flush-collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body p-0"> 
+                            
+                            <div className="row ms-4 me-4">
+                                <div className="col-5 border-light border-end pt-2 pb-2">
+                                    Max:
+                                    <div className="display-6 pb-2 ">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.temp_max)}°C` : "Not available"}
+                                    </div>
+                                    Humidity:
+                                    <div className="fs-5 d-flex">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.humidity)}%` : "N/A"}
+                                    </div>
+
+                                </div>
+
+                                <div className="col text-center align-self-center">
+                                    <div className="fs-1">icon here</div>
+                                    <div className="fs-4">
+                                        {forecastData? `${forecastData.list[1].weather[0].description}` : "N/A"}
+                                    </div>    
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
 
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        {`${getFollowingDate(6).dayOfWeek}, ${getFollowingDate(6).MonthName} ${getFollowingDate(6).day} `}
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                            {`${followingDays.day5.dayOfWeek}, ${followingDays.day5.MonthName} ${followingDays.day5.day} `}
                         </button>
                     </h2>
-                    <div id="flush-collapse5" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">Placeholder content for this accordion</div>
+                    <div id="flush-collapseFive" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body p-0"> 
+                            
+                            <div className="row ms-4 me-4">
+                                <div className="col-5 border-light border-end pt-2 pb-2">
+                                    Max:
+                                    <div className="display-6 pb-2 ">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.temp_max)}°C` : "Not available"}
+                                    </div>
+                                    Humidity:
+                                    <div className="fs-5 d-flex">
+                                        {forecastData? `${Math.round(forecastData.list[1].main.humidity)}%` : "N/A"}
+                                    </div>
+
+                                </div>
+
+                                <div className="col text-center align-self-center">
+                                    <div className="fs-1">icon here</div>
+                                    <div className="fs-4">
+                                        {forecastData? `${forecastData.list[1].weather[0].description}` : "N/A"}
+                                    </div>    
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
+
 
             </div>
-        </>
-
+    
     )
 
 }
