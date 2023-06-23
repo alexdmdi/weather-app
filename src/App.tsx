@@ -16,10 +16,10 @@ function App() {
 
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>({"id":6167865, "name":"Toronto", "state":"", "country":"CA"});
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [forecastData, setForecastData] = useState<any>(null);
 
-  const updateWeatherData = (data: object) => {
-    setWeatherData(data);
+  const updateForecastData = (forecastData: object) => {
+    setForecastData(forecastData);
   }
 
   return (
@@ -34,8 +34,8 @@ function App() {
         </h1>
 
         <div className="row text-center">
-          <div className="col-xl-3 col-md-1"></div>
-          <div className="col pt-3 pb-4 search-bar-container p-0">
+          <div className="col-xl-3 col-md-3"></div>
+          <div className="col-xl-6 col-md-6 pt-3 mb-4 search-bar-container p-0">
             <div className="fs-4 contentBox p-1 rounded">
               <div className="search-container">
                   <Suspense fallback={<div className="fs-5">Loading...</div>}>
@@ -44,17 +44,17 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="col-xl-3 col-md-1"></div>
+          <div className="col-xl-3 col-md-3"></div>
         
         </div>
 
         <div className="row">
           <div className="col-xl-2 col-md-1">   </div>
           <div className="col">
-            <Weather selectedLocation={selectedLocation} updateWeatherData={updateWeatherData} />
+            <Weather selectedLocation={selectedLocation} updateForecastData={updateForecastData} />
 
-            <div className="row border rounded ms-0 me-0 mb-5">
-              <FutureForecast weatherData={weatherData} />
+            <div className="row rounded ms-0 me-0 mb-5">
+              <FutureForecast forecastData={forecastData} />
             </div>    
           </div>
           <div className="col-xl-2 col-md-1">   </div>
