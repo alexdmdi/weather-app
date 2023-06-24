@@ -12,10 +12,6 @@ interface DayData {
     minTemp: number
     maxTemp: number;
     maxHumidity: number;
-    morningIconURL : string
-    afternoonIconURL : string
-    eveningIconURL : string
-    nightIconURL : string
   }
 
 function FutureForecast( {forecastData}: FutureForecastProps) {
@@ -70,10 +66,6 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             "minTemp": -100,
             "maxTemp" : -100,
             "maxHumidity" : 0,
-            "morningIconURL" : "",
-            "afternoonIconURL" : "",
-            "eveningIconURL" : "",
-            "nightIconURL" : ""
         }, 
 
         "day2": {
@@ -84,12 +76,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             "weatherList": [],
             "minTemp": -100,
             "maxTemp" : -100,
-            "maxHumidity" : 0,
-            "morningIconURL" : "",
-            "afternoonIconURL" : "",
-            "eveningIconURL" : "",
-            "nightIconURL" : ""
-            
+            "maxHumidity" : 0, 
         },
 
         "day3": {
@@ -101,10 +88,6 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             "minTemp": -100,
             "maxTemp" : -100,
             "maxHumidity" : 0,
-            "morningIconURL" : "",
-            "afternoonIconURL" : "",
-            "eveningIconURL" : "",
-            "nightIconURL" : ""
         }, 
 
         "day4": {
@@ -116,10 +99,6 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             "minTemp": -100,
             "maxTemp" : -100,
             "maxHumidity" : 0,
-            "morningIconURL" : "",
-            "afternoonIconURL" : "",
-            "eveningIconURL" : "",
-            "nightIconURL" : ""
         }, 
 
         "day5": {
@@ -131,10 +110,6 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             "minTemp": -100,
             "maxTemp" : -100,
             "maxHumidity" : 0,
-            "morningIconURL" : "",
-            "afternoonIconURL" : "",
-            "eveningIconURL" : "",
-            "nightIconURL" : ""
         }
     }
 
@@ -188,16 +163,6 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                 followingDays[day].maxHumidity = maxHumidity;
             });
 
-            (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach ((day) => { 
-                followingDays[day].morningIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[3].weather[0].icon}@2x.png`
-                followingDays[day].afternoonIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[4].weather[0].icon}@2x.png`
-                // followingDays[day].eveningIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[5].weather[0].icon}@2x.png`
-                // followingDays[day].nightIconURL = `https://openweathermap.org/img/wn/${followingDays[day].weatherList[6].weather[0].icon}@2x.png`
-
-            
-            });
-
-        
         }
         else{
             console.log(`missing weatherlist forecast data`);
@@ -207,43 +172,40 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         console.log(followingDays);
     }
 
-    // const scrollableComponent = () => {
-    //     const scrollbarRef = useRef(null);
-    //     useEffect(() => {
-    //         const scrollbarElement = scrollbarRef.current;
-        
-    //         if (scrollbarElement) {
-    //           scrollbarElement.addEventListener('wheel', handleWheel);
-    //         }
-        
-    //         return () => {
-    //           if (scrollbarElement) {
-    //             scrollbarElement.removeEventListener('wheel', handleWheel);
-    //           }
-    //         };
-    //       }, []);
-        
-    //       const handleWheel = (event: WheelEvent) => {
-    //         const { deltaY } = event;
-        
-    //         if (scrollbarRef.current) {
-    //           scrollbarRef.current.scrollLeft += deltaY;
-    //         }
-    //       };
     
-    // }
+    //functional horizontal scrolling with mouse wheel
+    const scrollbarRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const scrollbarElement = scrollbarRef.current;
     
+        if (scrollbarElement) {
+          scrollbarElement.addEventListener('wheel', handleWheel, { passive: true });
+        }
+    
+        return () => {
+          if (scrollbarElement) {
+            scrollbarElement.removeEventListener('wheel', handleWheel);
+          }
+        };
+      }, []);
+    
+      const handleWheel = (event: WheelEvent) => {
+        const { deltaY } = event;
+    
+        if (scrollbarRef.current) {
+            scrollbarRef.current.scrollLeft += deltaY*1.5;
+        }
+      };
 
     const handleMouseEnter = () => {
         document.body.classList.add('no-scrollbar');
-      };
+    };
     
-      const handleMouseLeave = () => {
+    const handleMouseLeave = () => {
         document.body.classList.remove('no-scrollbar');
-      };
+    };
 
-
-
+   //----------------------------------------------------------------------------------//      
 
     return( 
             <div className="accordion accordion-flush p-0" id="accordionFlushExample">
@@ -283,57 +245,27 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
 
                                 </div>
 
-                                <div className="col text-center d-flex overflow-x-scroll horizontalScroll" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                <div className="col text-center d-flex overflow-x-scroll horizScrollBar" ref={scrollbarRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                                     <div className="row flex-nowrap">
-                                        
-                                        <div className="col border-end border-light" id="morning">
-                                            <div className="fs-5">
-                                                <div className="fs-5 pt-2">
-                                                    Morning
+                                        {followingDays.day1.weatherList.map((item: any, index: number) => (
+                                            <>
+                                            
+                                            
+                                            {/* <div className="fs-6">
+                                                {forecastData? `${new Date(followingDays.day1.weatherList[index].dt * 1000).toLocaleTimeString(undefined, {hour: "2-digit",minute: "2-digit",})}`: "N/A"}
+                                            </div> */}
+
+                                            <div className="col border-end border-light d-flex justify-content-center align-items-center" key={index}>
+                                                <div className="fs-5">
+                                                    
+                                                    <div className="mt-4 mb-2">
+                                                        <img id="forecastImg" src={ `https://openweathermap.org/img/wn/${followingDays.day1.weatherList[index].weather[0].icon}@2x.png` } alt="icon"></img>
+                                                    </div>
+                                                    {forecastData? `${followingDays.day1.weatherList[index].weather[0].description}`: "N/A"}
                                                 </div>
-                                            <div className="mt-4 mb-2">
-                                                <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
                                             </div>
-                                                {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
-                                            </div>  
-                                        </div>
-
-                                        <div className="col border-end border-light" id="afternoon">
-                                            <div className="fs-5">
-                                                    <div className="fs-5 pt-2">
-                                                        Afternoon
-                                                    </div>
-                                                <div className="mt-4 mb-2">
-                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
-                                                </div>
-                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
-                                                </div>  
-                                        </div>
-
-                                        <div className="col border-end border-light" id="evening">
-                                            <div className="fs-5">
-                                                    <div className="fs-5 pt-2">
-                                                        Evening
-                                                    </div>
-                                                <div className="mt-4 mb-2">
-                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
-                                                </div>
-                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
-                                                </div>  
-                                        </div>
-
-                                        <div className="col" id="night">
-                                            <div className="fs-5">
-                                                    <div className="fs-5 pt-2">
-                                                        Night
-                                                    </div>
-                                                <div className="mt-4 mb-2">
-                                                    <img id="forecastImg" src={followingDays.day1.morningIconURL} alt="icon"></img>
-                                                </div>
-                                                    {forecastData? `${followingDays.day1.weatherList[0].weather[0].description}` : "N/A"}
-                                                </div>  
-                                        </div>
-
+                                            </>
+                                        ))}
                                     </div>
                                       
                                 </div>
@@ -481,7 +413,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
 
 
             </div>
-    
+
     )
 
 }
