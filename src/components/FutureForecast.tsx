@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface FutureForecastProps {
     forecastData: any;
@@ -15,6 +15,8 @@ interface DayData {
   }
 
 function FutureForecast( {forecastData}: FutureForecastProps) {
+    
+    const [listItemDiv, setListItemDiv] = useState<any>(null);
     
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -138,7 +140,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
 
         //sets max temp and max humidity for each of the following days, once api response is complete and weatherlist has been populated
         //then populates icon URLs for each day
-        if (forecastData && followingDays.day1.weatherList.length > 0){
+        if (followingDays.day1.weatherList.length > 0){
             (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach ((day) => {
                 let minTemp = 100;
                 let maxTemp = -100;
@@ -179,23 +181,24 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         const scrollbarElement = scrollbarRef.current;
     
         if (scrollbarElement) {
-          scrollbarElement.addEventListener('wheel', handleWheel, { passive: true });
+            console.log(scrollbarElement)
+            scrollbarElement.addEventListener('wheel', handleWheel, { passive: true });
         }
     
         return () => {
-          if (scrollbarElement) {
-            scrollbarElement.removeEventListener('wheel', handleWheel);
-          }
+            if (scrollbarElement) {
+                scrollbarElement.removeEventListener('wheel', handleWheel);
+            }
         };
-      }, []);
-    
-      const handleWheel = (event: WheelEvent) => {
+    }, []);
+
+    const handleWheel = (event: WheelEvent) => {
         const { deltaY } = event;
     
         if (scrollbarRef.current) {
             scrollbarRef.current.scrollLeft += deltaY*1.5;
         }
-      };
+    };
 
     const handleMouseEnter = () => {
         document.body.classList.add('no-scrollbar');
@@ -205,66 +208,76 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         document.body.classList.remove('no-scrollbar');
     };
 
-   //----------------------------------------------------------------------------------//      
+   //-----------------------------------------------------------------------------------------//      
 
     return( 
             <div className="accordion accordion-flush p-0" id="accordionFlushExample">
                 
-                <div className="accordion-item">
+                
+                {(Object.keys(followingDays) as Array<keyof typeof followingDays>).map((day: any, index: number) => (
+                <div className="accordion-item" key={index}>
                     <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            {`${followingDays.day1.dayOfWeek}, ${followingDays.day1.MonthName} ${followingDays.day1.day} `}
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${day}`} aria-expanded="false" aria-controls={`flush-collapse${day}`}>
+                            {`${followingDays[day].dayOfWeek}, ${followingDays[day].MonthName} ${followingDays[day].day} `}
                         </button>
                     </h2>
-                    <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div id={`flush-collapse${day}`} className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                         <div className="accordion-body p-0"> 
                             
                             <div className="row ms-0 me-0">
-                                <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-light border-1 border-end ">
+                                <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-end border-light border-1 ">
                                     
                                     <div className="row ms-2">
                                         Max:
                                     </div>
                                     <div className="row display-6 pb-2 ms-2">
-                                        {forecastData? `${Math.round(followingDays.day1.maxTemp)}°C` : "Not available"}
+                                        {forecastData? `${Math.round(followingDays[day].maxTemp)}°C` : "Not available"}
                                     </div>
 
                                     <div className="row ms-2">
                                         Min:
                                     </div>
                                     <div className="row fs-4 pb-2 ms-2">
-                                        {forecastData? `${Math.round(followingDays.day1.minTemp)}°C` : "Not available"}
+                                        {forecastData? `${Math.round(followingDays[day].minTemp)}°C` : "Not available"}
                                     </div>
 
                                     <div className="row ms-2">
                                         Max Humidity:
                                     </div>
                                     <div className="row fs-5 ms-2">
-                                        {forecastData? `${Math.round(followingDays.day1.maxHumidity)}%` : "N/A"}
+                                        {forecastData? `${Math.round(followingDays[day].maxHumidity)}%` : "N/A"}
                                     </div>
 
                                 </div>
 
                                 <div className="col text-center d-flex overflow-x-scroll horizScrollBar" ref={scrollbarRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                    
                                     <div className="row flex-nowrap">
-                                        {followingDays.day1.weatherList.map((item: any, index: number) => (
-                                            <>
+                                        {followingDays[day].weatherList.map((item: any, index: number) => (
                                             
-                                            
-                                            {/* <div className="fs-6">
-                                                {forecastData? `${new Date(followingDays.day1.weatherList[index].dt * 1000).toLocaleTimeString(undefined, {hour: "2-digit",minute: "2-digit",})}`: "N/A"}
-                                            </div> */}
+                                    
+                                            <div className="col border-end border-gray border-1" key={index}>
 
-                                            <div className="col border-end border-light d-flex justify-content-center align-items-center" key={index}>
-                                                <div className="fs-5">
+                                                <div className="row fs-6 d-flex justify-content-center pt-2">
+                                                    {forecastData? `${new Date(followingDays[day].weatherList[index].dt * 1000).toLocaleTimeString(undefined, {hour: "2-digit",minute: "2-digit",})}`: "N/A"}
                                                     
-                                                    <div className="mt-4 mb-2">
-                                                        <img id="forecastImg" src={ `https://openweathermap.org/img/wn/${followingDays.day1.weatherList[index].weather[0].icon}@2x.png` } alt="icon"></img>
-                                                    </div>
-                                                    {forecastData? `${followingDays.day1.weatherList[index].weather[0].description}`: "N/A"}
                                                 </div>
+                                            
+                                                <div className="row">
+                                                    <div className="fs-5 d-flex justify-content-center align-items-center" >
+                                                       <div className="mt-4 mb-2">
+                                                            <img id="forecastImg" src={ `https://openweathermap.org/img/wn/${followingDays[day].weatherList[index].weather[0].icon}@2x.png` } alt="icon"></img>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                                <div className="row fs-6 justify-content-center ps-2 pe-2"> 
+                                                    {forecastData? `${followingDays[day].weatherList[index].weather[0].description}`: "N/A"}
+                                                </div>
+
                                             </div>
-                                            </>
+                                            
                                         ))}
                                     </div>
                                       
@@ -275,7 +288,9 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                     </div>
                 </div>
 
-                <div className="accordion-item">
+                ))}
+
+                {/* <div className="accordion-item">
                     <h2 className="accordion-header">
                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                             {`${followingDays.day2.dayOfWeek}, ${followingDays.day2.MonthName} ${followingDays.day2.day} `}
@@ -409,7 +424,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                             
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
             </div>

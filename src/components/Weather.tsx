@@ -74,7 +74,7 @@ const Weather = ( {selectedLocation, updateForecastData }: WeatherProps) =>
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
         
         
-        <div className="col-5 d-flex align-items-center justify-content-center border-end border- border-light">
+        <div className="col-5 d-flex align-items-center justify-content-center border-end border-light">
           
           {currentWeather ? (
             <div className = "text-center">
