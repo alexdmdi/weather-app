@@ -106,9 +106,8 @@ interface DayData {
                     ))}
                   </div>
                 </div>
-                
               </div>
-
+              
             </div>
           </div>
         </div>
