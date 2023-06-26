@@ -15,8 +15,10 @@ const SearchBar = React.lazy( () => import ('./components/SearchBar'))
 function App() {
 
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>({"id":6167865, "name":"Toronto", "state":"", "country":"CA"});
+   //allows for state to be null and undefined as well for onMount use case, when coordinates are used instead of location type
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>();
   const [forecastData, setForecastData] = useState<any>(null);
+
 
   const updateForecastData = (forecastData: object) => {
     setForecastData(forecastData);
@@ -40,7 +42,7 @@ function App() {
             <div className="fs-4 contentBox p-1 rounded">
               <div className="search-container">
                   <Suspense fallback={<div className="fs-5">Loading...</div>}>
-                    <SearchBar setFilteredLocations={setFilteredLocations} onLocationSelect={setSelectedLocation} />  
+                    <SearchBar setFilteredLocations={setFilteredLocations} onLocationSelect={setSelectedLocation}/>  
                   </Suspense>
               </div>
             </div>
@@ -55,7 +57,7 @@ function App() {
           <div className="col-xl-2 col-lg-1 col-md-1">   </div>
           
           <div className="col-xl-8 col-lg-10 col-md-10">
-            <Weather selectedLocation={selectedLocation} updateForecastData={updateForecastData} />
+            <Weather selectedLocation={selectedLocation} updateForecastData={updateForecastData}/>
 
             <div className="row rounded ms-0 me-0 mb-5">
               <FutureForecast forecastData={forecastData} />
