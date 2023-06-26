@@ -95,6 +95,11 @@
     overflow-y: hidden !important;
 }
 
+.hourlyTemp {
+    transform: translateY(-80%);
+    
+}
+
 
 
 
