@@ -70,7 +70,7 @@ function AccordionItem({ day, followingDays }: { day: keyof typeof followingDays
                   Min:
                 </div>
                 <div className="row fs-5 pb-2 ms-2">
-                  {forecastData ? `${Math.round(followingDays[day].minTemp)}°C` : "Not available"}
+                  {forecastData ? `${Math.floor(followingDays[day].minTemp)}°C` : "Not available"}
                 </div>
   
                 <div className="row ms-2">
