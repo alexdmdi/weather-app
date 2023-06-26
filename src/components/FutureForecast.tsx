@@ -14,106 +14,107 @@ interface DayData {
     maxHumidity: number;
   }
 
-  function AccordionItem({ day, followingDays }: { day: keyof typeof followingDays; followingDays: { [key: string]: DayData } }, forecastData: any) {
-    const scrollbarRef = useRef<HTMLDivElement | null>(null);
-  
-    useEffect(() => {
-      const scrollbarElement = scrollbarRef.current;
-  
-      if (scrollbarElement) {
-        scrollbarElement.addEventListener("wheel", handleWheel, {
-          passive: true,
-        });
-      }
-  
-      return () => {
-        if (scrollbarElement) {
-          scrollbarElement.removeEventListener("wheel", handleWheel);
-        }
-      };
-    }, []);
-  
-    const handleWheel = (event: WheelEvent) => {
-      const { deltaY } = event;
-  
-      if (scrollbarRef.current) {
-        scrollbarRef.current.scrollLeft += deltaY * 1.5;
-      }
-    };
-  
-    const handleMouseEnter = () => {
-      document.body.classList.add("no-scrollbar");
-    };
-  
-    const handleMouseLeave = () => {
-      document.body.classList.remove("no-scrollbar");
-    };
-  
-    return (
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${String(day)}`} aria-expanded="false" aria-controls={`flush-collapse${String(day)}`}>
-              {`${followingDays[day].dayOfWeek}, ${followingDays[day].MonthName} ${followingDays[day].day} `}
-            </button>
-          </h2>
-          <div id={`flush-collapse${String(day)}`} className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-            <div className="accordion-body p-0">
-              
-              <div className="row ms-0 me-0">
-                <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-end border-light border-1">
-                  <div className="row ms-2">
-                    Max:
-                  </div>
-                  <div className="row display-6 pb-2 ms-2">
-                    {forecastData ? `${Math.round(followingDays[day].maxTemp)}°C` : "Not available"}
-                  </div>
-    
-                  <div className="row ms-2">
-                    Min:
-                  </div>
-                  <div className="row fs-4 pb-2 ms-2">
-                    {forecastData ? `${Math.round(followingDays[day].minTemp)}°C` : "Not available"}
-                  </div>
-    
-                  <div className="row ms-2">
-                    Max Humidity:
-                  </div>
-                  <div className="row fs-5 ms-2">
-                    {forecastData ? `${Math.round(followingDays[day].maxHumidity)}%` : "N/A"}
-                  </div>
-                </div>
-    
-                <div className="col text-center d-flex overflow-x-scroll horizScrollBar" ref={scrollbarRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                  <div className="row flex-nowrap">
-                    {followingDays[day].weatherList.map((item: any, index: number) => (
-                      <div className="col border-end border-gray border-1" key={index}>
-                        <div className="row fs-6 d-flex justify-content-center pt-2">
-                          {forecastData ? `${new Date(followingDays[day].weatherList[index].dt * 1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "N/A"}
-                        </div>
-    
-                        <div className="row">
-                          <div className="fs-5 d-flex justify-content-center align-items-center" >
-                            <div className="mt-4 mb-2">
-                              <img id="forecastImg" src={`https://openweathermap.org/img/wn/${followingDays[day].weatherList[index].weather[0].icon}@2x.png`} alt="icon" />
-                            </div>
-                          </div>
-                        </div>
-    
-                        <div className="row fs-6 justify-content-center ps-2 pe-2">
-                          {forecastData ? `${followingDays[day].weatherList[index].weather[0].description}` : "N/A"}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      );
+function AccordionItem({ day, followingDays }: { day: keyof typeof followingDays; followingDays: { [key: string]: DayData } }, forecastData: any) {
+  const scrollbarRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const scrollbarElement = scrollbarRef.current;
+
+    if (scrollbarElement) {
+      scrollbarElement.addEventListener("wheel", handleWheel, {passive: true,});
     }
 
+    return () => {
+      if (scrollbarElement) {
+        scrollbarElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, []);
+
+  const handleWheel = (event: WheelEvent) => {
+    const { deltaY } = event;
+
+    if (scrollbarRef.current) {
+      scrollbarRef.current.scrollLeft += deltaY * 1.5;
+    }
+  };
+
+  const handleMouseEnter = () => {
+    document.body.classList.add("no-scrollbar");
+  };
+
+  const handleMouseLeave = () => {
+    document.body.classList.remove("no-scrollbar");
+  };
+
+  return (
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#flush-collapse${String(day)}`} aria-expanded="false" aria-controls={`flush-collapse${String(day)}`}>
+            {`${followingDays[day].dayOfWeek}, ${followingDays[day].MonthName} ${followingDays[day].day} `}
+          </button>
+        </h2>
+        <div id={`flush-collapse${String(day)}`} className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+          <div className="accordion-body p-0">
+            
+            <div className="row ms-0 me-0">
+              <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-end border-light border-1">
+                <div className="row ms-2">
+                  Max:
+                </div>
+                <div className="row display-6 pb-2 ms-2">
+                  {forecastData ? `${Math.round(followingDays[day].maxTemp)}°C` : "Not available"}
+                </div>
+  
+                <div className="row ms-2">
+                  Min:
+                </div>
+                <div className="row fs-5 pb-2 ms-2">
+                  {forecastData ? `${Math.round(followingDays[day].minTemp)}°C` : "Not available"}
+                </div>
+  
+                <div className="row ms-2">
+                  Max Humidity:
+                </div>
+                <div className="row fs-5 ms-2">
+                  {forecastData ? `${Math.round(followingDays[day].maxHumidity)}%` : "N/A"}
+                </div>
+              </div>
+  
+              <div className="col text-center d-flex overflow-x-scroll horizScrollBar" ref={scrollbarRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <div className="row flex-nowrap">
+                  {followingDays[day].weatherList.map((item: any, index: number) => (
+                    <div className="col border-end border-gray border-1" key={index}>
+                      <div className="row fs-6 d-flex justify-content-center pt-2">
+                        {forecastData ? `${new Date(followingDays[day].weatherList[index].dt * 1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "N/A"}
+                      </div>
+  
+                      <div className="row">
+                        <div className="fs-5 d-flex justify-content-center align-items-center" >
+                          <div className="mt-4 mb-2">
+                            <img id="forecastImg" src={`https://openweathermap.org/img/wn/${followingDays[day].weatherList[index].weather[0].icon}@2x.png`} alt="icon" />
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div className="row fs-6 justify-content-center ps-2 pe-2 hourlyTemp">
+                        {forecastData ? `${Math.round(followingDays[day].weatherList[index].main.temp)}°C` : "N/A"}
+                      </div>
+                      
+                      <div className="row fs-6 justify-content-center ps-2 pe-2">
+                        {forecastData ? `${followingDays[day].weatherList[index].weather[0].description}` : "N/A"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    );
+}
 
 function FutureForecast( {forecastData}: FutureForecastProps) {
     
@@ -276,14 +277,19 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
     
    //-----------------------------------------------------------------------------------------//      
 
-   return( 
-        <div className="accordion accordion-flush p-0" id="accordionFlushExample">
-            {Object.keys(followingDays).map((day: keyof typeof followingDays, index: number) => (
-            <AccordionItem key={index} day={day} followingDays={followingDays}/>
-            ))}
-        </div>
-    
-    )
+   //prevents accordion list items (forecast) from rendering until data is ready
+   if (forecastData){
+     return( 
+          <div className="accordion accordion-flush p-0" id="accordionFlushExample">
+              {Object.keys(followingDays).map((day: keyof typeof followingDays, index: number) => (
+              <AccordionItem key={index} day={day} followingDays={followingDays}/>
+              ))}
+          </div>
+      
+      )
+
+   }
+   else return (<></>)
 
 }
 
