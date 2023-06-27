@@ -24,48 +24,50 @@ function App() {
 
   return (
     <>
-      <div className="container">
-        <NavBar />
-        <h1 className="display-5 fw-normal text-center mb-2 ">
-          Weather Forecast
-          <div className="ico-WiDayCloudy">
-            <WiDayCloudy size='1.5em' />
-          </div>
-        </h1>
+        <div className="container">
+          <NavBar />
+          <h1 className="display-5 fw-normal text-center mb-2 ">
+            Weather Forecast
+            <div className="ico-WiDayCloudy">
+              <WiDayCloudy size='1.5em' />
+            </div>
+          </h1>
 
-        <div className="row text-center">
-          <div className="col-xl-3 col-lg-3 col-md-2"></div>
-          
-          <div className="col pt-3 mb-4 search-bar-container p-0">
-            <div className="fs-4 contentBox p-1 rounded">
-              <div className="search-container">
-                  <Suspense fallback={<div className="fs-5">Loading...</div>}>
-                    <SearchBar setFilteredLocations={setFilteredLocations} onLocationSelect={setSelectedLocation}/>  
-                  </Suspense>
+          <div className="row text-center">
+            <div className="col-xl-3 col-lg-3 col-md-2"></div>
+            
+            <div className="col pt-3 mb-4 search-bar-container p-0">
+              <div className="fs-4 contentBox p-1 rounded">
+                <div className="search-container">
+                    <Suspense fallback={<div className="fs-5">Loading...</div>}>
+                      <SearchBar setFilteredLocations={setFilteredLocations} onLocationSelect={setSelectedLocation}/>  
+                    </Suspense>
+                </div>
               </div>
             </div>
+
+            <div className="col-xl-3 col-lg-3 col-md-2"></div>
+          
           </div>
 
-          <div className="col-xl-3 col-lg-3 col-md-2"></div>
-        
-        </div>
+          <div className="row">
+            
+            <div className="col-xl-2 col-lg-1 col-md-1">   </div>
+            
+            <div className="col-xl-8 col-lg-10 col-md-10">
+              <Weather selectedLocation={selectedLocation} updateForecastData={updateForecastData}/>
 
-        <div className="row">
-          
-          <div className="col-xl-2 col-lg-1 col-md-1">   </div>
-          
-          <div className="col-xl-8 col-lg-10 col-md-10">
-            <Weather selectedLocation={selectedLocation} updateForecastData={updateForecastData}/>
-
-            <div className="row rounded ms-0 me-0 mb-5">
-              <FutureForecast forecastData={forecastData} />
-            </div>    
+              <div className="row rounded ms-0 me-0 mb-5">
+                <FutureForecast forecastData={forecastData} />
+              </div>    
+            </div>
+            
+            <div className="col-xl-2 col-lg-1 col-md-1"></div>
           </div>
           
-          <div className="col-xl-2 col-lg-1 col-md-1"></div>
         </div>
-        
-      </div>
+
+      
 
     </>
   );

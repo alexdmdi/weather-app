@@ -10,15 +10,13 @@ interface SearchBarProps {
     onLocationSelect: (location: Location) => void;
 }
 
-const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) => {
+const SearchBar = ({onLocationSelect} : SearchBarProps) => {
     const[input, setInput] = useState("");
     const[searchResults, setSearchResults] = useState <Location[]>([]);
     const searchContainerRef = useRef<HTMLDivElement>(null);
       
     function filterLocations(locations: Location[], input: string): Location[] { 
         const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase()));
-      
-        setFilteredLocations(filteredLocations); //updates state
         return filteredLocations;
     }
 
@@ -32,6 +30,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
           return;
         }
       
+        //if input is more than 1 character, invoke filteredLocations functions and store value in a const, then update searchResults
         if (eventTargetValue.length > 1) {
           const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
           setSearchResults(filteredLocations);
@@ -41,7 +40,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
     const handleLocationSelect = (location: Location) => {
       console.log(location.name, location.country);
       onLocationSelect(location)// pass selected location to parent component
-      setSearchResults([]); //makes list dissapear once a search result is pressed
+      setSearchResults([]); //empties search results list, which also makes it dissapear once a search result is pressed
       setInput(""); //clears form on submit
     }
 
@@ -78,7 +77,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
                     </div>
                 </form>
 
-                {searchResults.length > 0 && (<SearchResults filteredLocations={searchResults} onLocationSelect={handleLocationSelect} />)}
+                {searchResults.length > 0 && (<SearchResults searchResults={searchResults} onLocationSelect={handleLocationSelect} />)}
             </div>
                 
         </>
