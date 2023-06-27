@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 
 interface FutureForecastProps {  //takes in these props from app.tsx
     forecastData: any;
@@ -119,31 +119,28 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         //populates weatherList in followingDays object, once api response is complete
         forecastData.list.forEach((listItem: any) => {
             
-            //sets up dateObj to follow for the selected cities timezone 
-            //by adding the offset from current local timezone, to reach UTC+0, then adding the remaining offset between UTC+0 and the chosen city to reach its time zone
+            //sets up dateObj to follow  the selected citie timezone, by first converting to UTC+0 equivalent
+            //then adding the remaining offset (from the api response) between UTC+0 and the chosen city to finish converting time zone
             const unixEpochTimeMS: number = (listItem.dt + forecastData.city.timezone + (currentDate.todayDateObj.getTimezoneOffset())*60) * 1000; 
             const dateObj: Date = new Date(unixEpochTimeMS);
             
-
+            //if the forecast time stamp pertains to the current day in that time zone, don't push it to the forecast array for any following day
             if (dateObj.toDateString() === currentDate.todayDateObj.toDateString())
             {
                 return;
             }
+            //otherwise categorize respose.list items into each respective following day
             (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach((key) => {
                 if (dateObj.toDateString() === followingDays[key].date.toDateString())
                 {
         
                     followingDays[key].weatherList.push(listItem);
                 }
-                // console.log('dateObj is: ')
-                // console.log(dateObj)
-                // console.log('date for current selected day: ')
-                // console.log(followingDays[key].date.toDateString())
+
             })
         })
 
-        //sets max temp and max humidity for each of the following days, once api response is complete and weatherlist has been populated
-        //then populates icon URLs for each day
+        //sets max temp, max humidity for the following days, once api response is complete and each days weatherlist[] has been populated
         if (forecastData && followingDays.day1.weatherList.length > 0){
             (Object.keys(followingDays) as Array<keyof typeof followingDays>).forEach ((day) => {
                 let minTemp = 100;
@@ -170,11 +167,11 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
             });
 
         }
-        else{
+        else {
             console.log(`missing weatherlist forecast data`);
         }
 
-        //prints out final followingDays object (length 5)
+        //console.log final followingDays object (expected length: 5)
         console.log(followingDays);
       
     }
@@ -185,9 +182,10 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
       forecastData: any;
     }
 
+    //This function is used to make each accordion item its own locally used component in the final return statement, so that each rendered
+    //following day accordion item has a separate functioning useRef hook that enables horizontal scrolling with just the mousewheel
     function AccordionItem({ day, followingDays, forecastData }: AccordionItemProps) {
       const timezoneOffset = forecastData.city.timezone; 
-      // console.log(timezoneOffset);
       
       const scrollbarRef = useRef<HTMLDivElement | null>(null);
       useEffect(() => {
@@ -232,7 +230,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
               <div className="accordion-body p-0">
                 
                 <div className="row ms-0 me-0">
-                  <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-end border-light border-1">
+                  <div className="col-5 ps-2 pe-2 pt-3 pb-3 border-end border-light border-1 forecastDaySummary">
                     <div className="row ms-2">
                       Max:
                     </div>
@@ -258,7 +256,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                   <div className="col text-center d-flex overflow-x-scroll horizScrollBar" ref={scrollbarRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <div className="row flex-nowrap">
                       {followingDays[day].weatherList.map((item: any, index: number) => (
-                        <div className="col border-end border-gray border-1" key={index}>
+                        <div className="col border-end border-gray border-1 forecastItem" key={index}>
                           <div className="row fs-6 d-flex justify-content-center pt-2">
                             {forecastData ? `${new Date((followingDays[day].weatherList[index].dt + currentDate.todayDateObj.getTimezoneOffset()*60 + timezoneOffset) * 1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "N/A"}
                           </div>
