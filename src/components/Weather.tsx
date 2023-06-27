@@ -21,39 +21,10 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
   const [currWeatherIcon, setCurrWeatherIcon] = useState<string>("");
   const [currLocation, setCurrLocation] = useState<CurrentLocation | null>(null);
 
-  const fetchWeatherData = async (latitude: number, longitude: number, locationId?: number) => {
-    try {
-      // Fetch current weather data
-      const currentWeatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`);
-      if (!currentWeatherResponse.ok) {
-        throw new Error('Weather data request failed');
-      }
-      const currentWeatherData = await currentWeatherResponse.json();
-      console.log('Current Weather data:', currentWeatherData);
-      setCurrentWeather(currentWeatherData); 
-
-      //Set correct icon for current weather based on the code provided in the response
-      const currIconCode = currentWeatherData.weather[0].icon;
-      const currIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`;
-      setCurrWeatherIcon(currIconURL);
-
-      //Fetch forecast data
-      const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`);
-      if (!forecastResponse.ok) {
-        throw new Error('Forecast data request failed');
-      }
-      const forecastData = await forecastResponse.json();
-      console.log('Forecast data response:', forecastData);
-      setForecastData(forecastData);
-      updateForecastData(forecastData); //to be passed on to app.tsx then to futureforecast.tsx
-    } 
-    catch (error) {
-      console.error('Error fetching forecast data:', error);
-    }
-  };
-
-  //uses ipApi.co to get users approximate coordinates, so it may be used to fetch current weather and forecast data for their location, on mount (page load)
+  // console.log(`TTTTTTTTTT ${selectedLocation}`);
+  //On mount/page load: uses ipApi.co to get users approximate coordinates, so current weather and forecast data can then be fetched for user location
   useEffect(() => {
+    // console.log(`----------------------`)
     const getUserLocation = async () => {
       try {
         const response = await fetch(`https://ipapi.co/json`);
@@ -74,17 +45,49 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
         setCurrLocation(userLocation);
         fetchWeatherData(userLocation.lat, userLocation.lon);
       }
+
+      if (selectedLocation !== null && selectedLocation !==undefined) {
+        console.log(`selected location is: ${selectedLocation}`)
+        fetchWeatherData(0, 0, selectedLocation.id);
+      }
     };
 
     initializeWeatherData();
 
-  }, []);
-
-  useEffect(() => {
-    if (selectedLocation) {
-      fetchWeatherData(0, 0, selectedLocation.id);
-    }
   }, [selectedLocation]);
+
+
+  //fetch current weather and forecast using different fetch URLs depending on if a location is provided, otherwise uses current user coordinates
+  const fetchWeatherData = async (latitude: number, longitude: number, locationId?: number) => {
+    try {
+      // Fetch current weather data
+      const currentWeatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`);
+      if (!currentWeatherResponse.ok) {
+        throw new Error('Weather data request failed');
+      }
+      const currentWeatherData = await currentWeatherResponse.json();
+      console.log('Current Weather data:', currentWeatherData);
+      setCurrentWeather(currentWeatherData); 
+
+      //Set current weather icon based on the API response icon code
+      const currIconCode = currentWeatherData.weather[0].icon;
+      const currIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`;
+      setCurrWeatherIcon(currIconURL);
+
+      //Fetch forecast data
+      const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`);
+      if (!forecastResponse.ok) {
+        throw new Error('Forecast data request failed');
+      }
+      const forecastData = await forecastResponse.json();
+      console.log('Forecast data response:', forecastData);
+      setForecastData(forecastData);
+      updateForecastData(forecastData); //to be passed on to app.tsx then to futureforecast.tsx
+    } 
+    catch (error) {
+      console.error('Error fetching forecast data:', error);
+    }
+  };
 
 
   return(
