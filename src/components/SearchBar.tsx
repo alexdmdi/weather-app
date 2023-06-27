@@ -1,9 +1,7 @@
 import React, {useState, ChangeEvent, useEffect, useRef} from "react";
 
-import styles from '../App.css';
 import locations from "../assets/locations";
 import { FaSearch } from "react-icons/fa";
-import config from "../config";
 import SearchResults from "./SearchResults";
 import { Location } from "./types";
 
@@ -27,16 +25,16 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
 
     const handleSearchChange = (eventTargetValue: string) => {
         setInput(eventTargetValue);
-        console.log(`handleChange function called with with passed search query of ${eventTargetValue.toLowerCase()} and eventTargetValue.length is ${eventTargetValue.length}`)
+        // console.log(`handleChange function called with with passed search query of ${eventTargetValue.toLowerCase()} and eventTargetValue.length is ${eventTargetValue.length}`)
 
         if (eventTargetValue.length <= 1) {
           setSearchResults([]);
           return;
-          }
+        }
       
         if (eventTargetValue.length > 1) {
           const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
-            setSearchResults(filteredLocations);
+          setSearchResults(filteredLocations);
         } 
     }
 
@@ -50,7 +48,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
     //makes results list dissapear on outside focus
     const handleClickOutside = (event: MouseEvent) => {
         if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
-          setSearchResults([]);
+          setSearchResults([]); 
         }
       };
     
