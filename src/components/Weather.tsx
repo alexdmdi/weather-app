@@ -21,7 +21,6 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
   const [currWeatherIcon, setCurrWeatherIcon] = useState<string>("");
   const [currLocation, setCurrLocation] = useState<CurrentLocation | null>(null);
 
-  // console.log(`TTTTTTTTTT ${selectedLocation}`);
   //On mount/page load: uses ipApi.co to get users approximate coordinates, so current weather and forecast data can then be fetched for user location
   useEffect(() => {
     // console.log(`----------------------`)
@@ -68,7 +67,7 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
       const currentWeatherData = await currentWeatherResponse.json();
       console.log('Current Weather data:', currentWeatherData);
       setCurrentWeather(currentWeatherData); 
-
+    
       //Set current weather icon based on the API response icon code
       const currIconCode = currentWeatherData.weather[0].icon;
       const currIconURL: string = `https://openweathermap.org/img/wn/${currIconCode}@2x.png`;
@@ -88,7 +87,7 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
       console.error('Error fetching forecast data:', error);
     }
   };
-
+   
 
   return(
       <div className="row border rounded ms-0 me-0 mb-5 contentBox ">
@@ -100,11 +99,15 @@ const Weather = ({ selectedLocation, updateForecastData }: WeatherProps) => {
               <h2 className="display-3 mb-0"> 
                 {Math.round(currentWeather.main.temp)}<sup>°C</sup> 
               </h2>
-              <p>{`Feels like ${Math.round(currentWeather.main.feels_like)}`}°C</p>
+              <p className="mb-0 pb-0">{`Feels like ${Math.round(currentWeather.main.feels_like)}`}°C</p>
+              <p className="mt-0 mb-0 pt-0 pb-0"> 
+                {`Humidity: ${currentWeather.main.humidity}%`} 
+              </p>
               <h3 className="fs-5 pt-2 text-info locationText">
                 {`${selectedLocation? `${selectedLocation?.name}, ${selectedLocation?.country}`  :  `${currLocation? `${currLocation.city} ${currLocation.regionCode? `${currLocation.regionCode}` : ""}, ${currLocation.countryName}` : `${'null'}` }` }`}
               </h3>
-              {`Humidity: ${currentWeather.main.humidity}%`} 
+              {currentWeather? `Local time ${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60000 + currentWeather.timezone*1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "Local time: N/A"}
+              
             </div>
             ) : (<div>Loading weather from openweather...</div>)
           }
