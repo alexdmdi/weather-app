@@ -15,10 +15,8 @@ const SearchBar = React.lazy( () => import ('./components/SearchBar'))
 function App() {
 
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
-   //allows for state to be null and undefined as well for onMount use case, when coordinates are used instead of location type
   const [selectedLocation, setSelectedLocation] = useState<Location | null>();
-  const [forecastData, setForecastData] = useState<any>(null);
-
+  const [forecastData, setForecastData] = useState<any>(null); //gets passed to futureforecast
 
   const updateForecastData = (forecastData: object) => {
     setForecastData(forecastData);
@@ -76,5 +74,5 @@ function App() {
 export default App
 
 //NOTES:
-//line 41 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
-//line 42 uses react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
+//line 43 passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
+//line 43 uses react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle

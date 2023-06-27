@@ -44,6 +44,7 @@ const SearchBar = ({setFilteredLocations, onLocationSelect} : SearchBarProps) =>
       console.log(location.name, location.country);
       onLocationSelect(location)// pass selected location to parent component
       setSearchResults([]); //makes list dissapear once a search result is pressed
+      setInput(""); //clears form on submit
     }
 
     //makes results list dissapear on outside focus
