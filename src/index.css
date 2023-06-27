@@ -1,15 +1,12 @@
 :root {
   background-image: url("./assets/sky-clouds.jpg");
-  background-repeat: no-repeat;
-  background-size:fill;
+  background-repeat:no-repeat;
+  background-size:cover;
   
-  /*border-width:2px;
-  border-color:red;
-  border-style: solid;*/
 }
 
 body {
   background-color:transparent;
-  
+
 }
 
