@@ -273,7 +273,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                             {forecastData ? `${Math.round(followingDays[day].weatherList[index].main.temp)}°C` : "N/A"}
                           </div>
                           
-                          <div className="row fs-6 justify-content-center ps-2 pe-2">
+                          <div className="row fs-6 justify-content-center ps-2 pe-2 text-capitalize">
                             {forecastData ? `${followingDays[day].weatherList[index].weather[0].description}` : "N/A"}
                           </div>
                         </div>
