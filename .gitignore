@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 src/config.tsx
-src/assets/locationsOld.tsx
 src/assets/sources.txt
+src/.env
