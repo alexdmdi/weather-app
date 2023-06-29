@@ -9,12 +9,13 @@ const DayCSS: string = `
   
   .navCustomized {
       background-color:rgba(255, 255, 255, 0.637) !important;
+      
   }
   
   .nav-link:hover {
-      background-color:rgba(255, 255, 255, 0.479);
-      border-radius:12px;
-  }
+    color:rgb(153, 204, 255) !important;
+    
+    }
 
   .ico-WiDayCloudy{
       display:inline-block;
@@ -24,10 +25,17 @@ const DayCSS: string = `
       padding-left:8px;
       padding-right:8px;
   }
+
+  .weatherDescription {
+    transform: translateY(-30%);
+  }
+
   .accordion-item {
       background: rgba(255, 255, 255, 0.432) !important;
       -webkit-backdrop-filter: blur(10px) !important;
       backdrop-filter: blur(10px) !important;
+      -webkit-box-shadow: 0px 5px 17px 9px rgba(0,0,0,0.20); 
+      box-shadow: 0px 10px 20px 5px rgba(0,0,0,0.10);
   }
   
   .accordion-button:not(.collapsed){
@@ -38,6 +46,9 @@ const DayCSS: string = `
       background: rgba(255, 255, 255, 0.432) !important; 
       -webkit-backdrop-filter: blur(10px) !important;
       backdrop-filter: blur(10px) !important;
+
+      -webkit-box-shadow: 0px 5px 17px 9px rgba(0,0,0,0.20); 
+      box-shadow: 0px 3px 20px 5px rgba(0,0,0,0.10);
       
   }
   

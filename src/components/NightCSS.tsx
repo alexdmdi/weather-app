@@ -13,12 +13,12 @@ body {
 }
 
 .navCustomized {
-    background: rgba(122, 132, 158, 0.733) !important; 
+    background: rgba(90, 105, 120, 0.604) !important;  
 }
 
 .nav-link:hover {
-    background-color:rgba(148, 156, 179, 0.733) !important;
-    border-radius:12px;
+    color:rgba(255, 255, 255, 0.8) !important;
+    
 }
 
 h1, div {
@@ -43,6 +43,10 @@ h1, div {
     border-right-color: rgba(150, 161, 184, 0.993) !important;
 }
 
+.weatherDescription {
+    transform: translateY(-30%);
+}
+
 .accordion-item {
     background: rgba(90, 105, 120, 0.404) !important; 
     -webkit-backdrop-filter: blur(10px) !important;
@@ -61,6 +65,7 @@ h1, div {
     background-color:rgba(109, 116, 139, 0.685) !important;
     color:white !important;  
 }
+
 
 .forecastItem {
     border-color: rgba(150, 161, 184, 0.432) !important;
