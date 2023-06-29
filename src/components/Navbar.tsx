@@ -11,7 +11,7 @@ function NavBar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 me-5 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="https://alexdiamandi.com">About </a>
+                                <a className="nav-link active" aria-current="page" href="https://www.alexdiamandi.com/Weather-app.html">About </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link active" href="https://github.com/alexdmdi/weather-app">Github Source</a>
