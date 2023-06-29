@@ -30,7 +30,7 @@ const SearchBar = ({onLocationSelect} : SearchBarProps) => {
           return;
         }
       
-        //if input is more than 1 character, invoke filteredLocations functions and store value in a const, then update searchResults
+        //if input is more than 1 character, invoke filteredLocations functions and store value in a const, then update searchResults hook
         if (eventTargetValue.length > 1) {
           const filteredLocations = filterLocations(locations, eventTargetValue.toLowerCase());
           setSearchResults(filteredLocations);

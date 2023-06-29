@@ -86,8 +86,6 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
       const sunriseDateObj = new Date(currentWeatherData.sys.sunrise*1000 + new Date().getTimezoneOffset()*60000 + currentWeatherData.timezone*1000);
       const sunsetDateObj = new Date(currentWeatherData.sys.sunset*1000 + new Date().getTimezoneOffset()*60000 + currentWeatherData.timezone*1000);
       setSunrise_SunSet({"sunrise" : sunriseDateObj, "sunset" : sunsetDateObj})
-      console.log(`sunrise in current location is: ${sunriseDateObj.toLocaleTimeString()}`);
-      console.log(`sunset in current location is: ${sunsetDateObj.toLocaleTimeString()}`);
     
       const userDateObj = new Date();
       const selectedLocation_DateObj = new Date (userDateObj.getTime() + userDateObj.getTimezoneOffset()*60000 + currentWeatherData.timezone*1000);
@@ -154,23 +152,20 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
 
               </div>
 
-
               <div className="col align-self-center text-center mt-3 mb-3 ">    
                 <p className="fs-5 mb-0 ps-0 d-inline">Max:</p>
-                <p className="mb-0 pb-0"> {`${Math.floor(currentWeather.main.temp_max)}°C`}  </p>
+                <p className="mb-0 pb-0"> {`${Math.round(currentWeather.main.temp_max)}°C`}  </p>
                 
                 <p className="fs-5 mb-0 ps-0">Min:</p>
-                <p className="mb-0"> {`${Math.round(currentWeather.main.temp_min)}°C`}  </p>  
+                <p className="mb-0"> {`${Math.floor(currentWeather.main.temp_min)}°C`}  </p>  
               </div>
 
               <div className="col align-self-center text-center mt-3 mb-3">
-                  <p className="fs-5 mb-0 pe-2">Sunrise:</p>
-                  <p className="mb-0 pb-0"> {`${sunrise_sunset? sunrise_sunset.sunrise.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : "N/A"} `}  </p>
-                  <p className="fs-5 mb-0 pe-2">Sunset:</p>
-                  <p className="mb-0"> {`${sunrise_sunset? sunrise_sunset.sunset.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" } ) : "N/A"}` }  </p>
-
+                <p className="fs-5 mb-0 pe-2">Sunrise:</p>
+                <p className="mb-0 pb-0"> {`${sunrise_sunset? sunrise_sunset.sunrise.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : "N/A"} `}  </p>
+                <p className="fs-5 mb-0 pe-2">Sunset:</p>
+                <p className="mb-0"> {`${sunrise_sunset? sunrise_sunset.sunset.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" } ) : "N/A"}` }  </p>
               </div>
-            
                             
             </div>
             ) : (<div></div>)
