@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 src/config.tsx
 src/assets/sources.txt
-src/.env
+.env
