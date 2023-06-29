@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import config from "../config"
 import { Location } from "./types";
 
 interface WeatherProps {
@@ -30,7 +29,7 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
       try {
         const response = await fetch(`https://ipapi.co/json`);
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         const currUserData = { lat: data.latitude, lon: data.longitude, city: data.city, regionCode: data.region_code, countryName: data.country_name };
         return currUserData;
       } 
@@ -69,8 +68,8 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
 
   //fetch current weather and forecast using different fetch URLs depending on if a location is provided, otherwise uses current user coordinates
   const fetchWeatherData = async (latitude: number, longitude: number, locationId?: number) => {
-    const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`;
-    const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${config.apiKey}&units=metric`;
+    const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${import.meta.env.VITE_APIKEY}&units=metric`;
+    const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?${locationId ? `id=${locationId}` : `lat=${latitude}&lon=${longitude}`}&appid=${import.meta.env.VITE_APIKEY}&units=metric`;
     
     try {
       const [currentWeatherData, forecastData] = await Promise.all([fetchData(currentWeatherURL), fetchData(forecastURL)]);
