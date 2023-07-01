@@ -1,4 +1,5 @@
 import { useEffect, useRef} from "react";
+import date from 'date-and-time';
 
 interface FutureForecastProps {  //takes in these props from app.tsx
     forecastData: any;
@@ -258,7 +259,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
                       {followingDays[day].weatherList.map((item: any, index: number) => (
                         <div className="col border-end border-gray border-1 forecastItem" key={index}>
                           <div className="row fs-6 d-flex justify-content-center pt-2">
-                            {forecastData ? `${new Date((followingDays[day].weatherList[index].dt + currentDate.todayDateObj.getTimezoneOffset()*60 + apiTimezoneOffset) * 1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "N/A"}
+                            {forecastData ? `${ date.format(new Date((followingDays[day].weatherList[index].dt + currentDate.todayDateObj.getTimezoneOffset()*60 + apiTimezoneOffset) * 1000), 'hh:mm A'   )      }` : "N/A"}
                           </div>
       
                           <div className="row">

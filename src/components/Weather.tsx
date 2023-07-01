@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Location } from "./types";
+import date from 'date-and-time';
 
 interface WeatherProps {
   selectedLocation: Location | null | undefined;  //specifies that selecedLocation may be null or undefined, not just of type Location
@@ -126,7 +127,7 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
                 {`${selectedLocation? `${selectedLocation?.name}, ${selectedLocation?.country}`  :  `${currLocation? `${currLocation.city} ${currLocation.regionCode? `${currLocation.regionCode}` : ""}, ${currLocation.countryName}` : `${'null'}` }` }`}
               </h3>
               <p className="mb-3">
-                {currentWeather? `Local time ${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60000 + currentWeather.timezone*1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "Local time: N/A"}
+                {currentWeather? `   Local time ${date.format(new Date(new Date().getTime() + new Date().getTimezoneOffset()*60000 + currentWeather.timezone*1000), 'hh:mm A' )}` : "Local time: N/A"}
               </p>
               
             </div>
@@ -161,9 +162,9 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
 
               <div className="col align-self-center text-center mt-3 mb-3">
                 <p className="fs-5 mb-0 pe-2">Sunrise:</p>
-                <p className="mb-0 pb-0"> {`${sunrise_sunset? sunrise_sunset.sunrise.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : "N/A"} `}  </p>
+                <p className="mb-0 pb-0"> {`${sunrise_sunset? date.format(sunrise_sunset.sunrise, 'hh:mm A'): "N/A"} `}  </p>
                 <p className="fs-5 mb-0 pe-2">Sunset:</p>
-                <p className="mb-0"> {`${sunrise_sunset? sunrise_sunset.sunset.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" } ) : "N/A"}` }  </p>
+                <p className="mb-0"> {`${sunrise_sunset? date.format(sunrise_sunset.sunset, 'hh:mm A') : "N/A"}` }  </p>
               </div>
                             
             </div>
