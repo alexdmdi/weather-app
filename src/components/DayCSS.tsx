@@ -96,7 +96,6 @@ const DayCSS: string = `
   }
       
   .horizScrollBar::-webkit-scrollbar-track {
-      /* -webkit-box-shadow: inset 0 0 6px rgb(0, 0, 0);  */
       border-radius: 0px !important;
       background-color:rgba(184, 183, 183, 0.808) !important;
       

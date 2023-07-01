@@ -55,13 +55,13 @@ h1, div {
     border-bottom-color: rgb(111, 120, 139) !important;
 }
 
-/* closed */
+
 .accordion-button {
     background-color:rgba(46, 49, 61, 0.575) !important;
     color: white !important;
 }
 
-/* for opened item */
+
 .accordion-button:not(.collapsed){
     background-color:rgba(109, 116, 139, 0.685) !important;
     color:white !important;  
@@ -124,7 +124,6 @@ h1, div {
 }
     
 .horizScrollBar::-webkit-scrollbar-track {
-    /* -webkit-box-shadow: inset 0 0 6px rgb(0, 0, 0);  */
     border-radius: 0px !important;
     background-color:rgba(184, 183, 183, 0.808) !important;
     
