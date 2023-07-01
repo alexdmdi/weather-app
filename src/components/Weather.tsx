@@ -141,7 +141,7 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
           {currentWeather ? (
             <div className = "row">
 
-              <div className="col text-center mt-0">
+              <div className="col-sm-4 text-center mt-0">
                 <h2 className= "weatherIcon fs-2 d-inline "> 
                   <img src={currWeatherIcon} alt="weather icon" className="mb-0 pb-0 weatherIcon"/>
                 </h2>
