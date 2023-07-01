@@ -1,8 +1,9 @@
+import nightBackground from '../assets/nightSkyBackground.jpg'
 
 const NightCSS: string = `
 
 body {
-    background-image: url("/src/assets/nightSkyBackground.jpg");
+    background-image: url("${nightBackground}");
     backround-repeat: no-repeat;
     background-size:cover; 
     background-attachment: fixed;

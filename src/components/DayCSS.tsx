@@ -1,8 +1,10 @@
+import dayBackground from '../assets/sky-clouds.jpg'
+
 const DayCSS: string = `
   body {
-    background-image: url("/src/assets/sky-clouds.jpg");
+    background-image: url(${dayBackground});
     backround-repeat: no-repeat;
-    background-size:cover; 
+    background-size: cover; 
     background-attachment: fixed;
 
   }
