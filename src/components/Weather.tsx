@@ -123,7 +123,7 @@ const Weather = ({ selectedLocation, updateForecastData, updateTheme}: WeatherPr
                 {`Humidity: ${currentWeather.main.humidity}%`} 
               </p>
               <h3 className="fs-5 pt-3 text-info locationText">
-                {`${selectedLocation? `${selectedLocation?.name}, ${selectedLocation?.country}`  :  `${currLocation? `${currLocation.city} ${currLocation.regionCode? `${currLocation.regionCode}` : ""}, ${currLocation.countryName}` : `${'null'}` }` }`}
+                {`${selectedLocation? `${selectedLocation?.n}, ${selectedLocation?.cn}`  :  `${currLocation? `${currLocation.city} ${currLocation.regionCode? `${currLocation.regionCode}` : ""}, ${currLocation.countryName}` : `${'null'}` }` }`}
               </h3>
               <p className="mb-3">
                 {currentWeather? `Local time ${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60000 + currentWeather.timezone*1000).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "Local time: N/A"}

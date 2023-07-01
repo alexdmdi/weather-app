@@ -5,6 +5,8 @@ interface SearchResultsProps {
     onLocationSelect: (location: Location) => void 
 }
 
+//n = name, st = state, cn = country
+
 
 const SearchResults = ( {searchResults, onLocationSelect} : SearchResultsProps) => {
   return (
@@ -12,7 +14,7 @@ const SearchResults = ( {searchResults, onLocationSelect} : SearchResultsProps) 
           <ul className="list-group contentBox">
             {searchResults.map((location, index) => (
               <li key={index} onClick={() => onLocationSelect(location)} className="list-group-item list-group-item-action fs-6">
-                 {`${location.name}${location.state ? `, ${location.state}` : ""}, ${location.country}`}
+                 {`${location.n}${location.st ? `, ${location.st}` : ""}, ${location.cn}`}
               </li>
             ))}
           </ul>
