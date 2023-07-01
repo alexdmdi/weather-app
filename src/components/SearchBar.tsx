@@ -16,7 +16,7 @@ const SearchBar = ({onLocationSelect} : SearchBarProps) => {
     const searchContainerRef = useRef<HTMLDivElement>(null);
       
     function filterLocations(locations: Location[], input: string): Location[] { 
-        const filteredLocations: Location[] = locations.filter(location => location.n.toLowerCase().startsWith(input.toLowerCase()));
+        const filteredLocations: Location[] = locations.filter(location => location.name.toLowerCase().startsWith(input.toLowerCase()));
         return filteredLocations;
     }
 
@@ -38,7 +38,7 @@ const SearchBar = ({onLocationSelect} : SearchBarProps) => {
     }
 
     const handleLocationSelect = (location: Location) => {
-      console.log(location.n, location.cn);
+      console.log(location.name, location.country);
       onLocationSelect(location)// pass selected location to parent component
       setSearchResults([]); //empties search results list, which also makes it dissapear once a search result is pressed
       setInput(""); //clears form on submit

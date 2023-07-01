@@ -1,10 +1,8 @@
 export interface Location {
   id: number;
-  n: string;
+  name: string;
   st: string;
-  cn: string;
+  country: string;
 }
 
-//n = name
 //st = state
-//cn = country

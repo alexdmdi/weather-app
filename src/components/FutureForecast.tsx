@@ -30,7 +30,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         return currentDateObject;
     }
     const currentDate = getCurrentDate();
-    console.log(`current date from local pc based is: ${currentDate.todayDateObj}`)
+    console.log(`current date and time based on user browser is: ${currentDate.todayDateObj}`)
 
     //passing an offset of 1 means tomorrow, one day after currentDate, passing 2 is for after tomorrow, etc
     const getDateInfo = (dayOffset: number) => {

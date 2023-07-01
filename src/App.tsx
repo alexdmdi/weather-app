@@ -2,8 +2,9 @@ import React, { useState, Suspense } from "react";
 
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import NightCSS from './components/NightCSS'
 import DayCSS from './components/DayCSS'
+import NightCSS from './components/NightCSS'
+
 
 import NavBar from './components/Navbar'
 import Weather from "./components/Weather"
@@ -19,7 +20,7 @@ function App() {
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>();
   const [forecastData, setForecastData] = useState<any>(null); //gets passed to futureforecast
-  const [dayThemeBoolean, setDayThemeBoolean] = useState<boolean>(); //true: DayCSS used, false: NightCSS used
+  const [dayThemeBoolean, setDayThemeBoolean] = useState<boolean>(true); //true: DayCSS used, false: NightCSS used
 
   const updateTheme = (booleanValue: boolean) => {
     setDayThemeBoolean(booleanValue);
@@ -28,6 +29,8 @@ function App() {
   const updateForecastData = (forecastData: object) => {
     setForecastData(forecastData);
   }
+
+
 
   return (
     <>
