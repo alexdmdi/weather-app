@@ -1,0 +1,13 @@
+name: Print API Key
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  print-key:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print API Key
+        run: echo "${{ secrets.VITE_APIKEY }}"
