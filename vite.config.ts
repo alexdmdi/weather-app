@@ -14,6 +14,19 @@ export default defineConfig(function ({ mode }) {
     define: {
       'process.env.VITE_APIKEY': JSON.stringify(isProduction ? process.env.VITE_APIKEY : import.meta.env.VITE_APIKEY),
     },
+    build: {
+      rollupOptions: {
+        treeshake: true,
+        output: {
+          manualChunks: undefined,
+        },
+      },
+    },
+    esbuild: {
+      minify: true,
+      target: 'es2020',
+    },
   };
+  
 });
 
