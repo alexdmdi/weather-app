@@ -1,5 +1,9 @@
+## About 
+
 This is a react-vite typescript project that fetches weather data from a free API (https://OpenWeatherMap.org). By default the page gets the users location to set the weather and forecast data, by fetching approximate coordinates from ipapi (https://ipapi.co/json).
 
+
+## Data
 No data is retained, this project does not use a back end or database. 
 No data fetched from ipapi is used besides the approximate coordinates.
 
