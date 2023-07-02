@@ -1,8 +1,9 @@
 /// <reference types="vite/client" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 export default defineConfig(function ({ mode }) {
   const isProduction = mode === 'production';
