@@ -7,8 +7,8 @@ to the nearest locale based on the users approximate coordinates, which are fetc
 The page theme changes based on the set location and whether or not it is day time there, based on sunset and sunrise.
 
 ## Built With
--React (vite, typescript)
--Bootstrap/CSS
+-React (vite, typescript) <br>
+-Bootstrap/CSS <br>
 -Node packages/modules: date-and-time, gh-pages
 
 ## Data
