@@ -10,7 +10,7 @@ export default defineConfig(function ({ mode }) {
     plugins: [react()],
     base: '/weather-app/',
     define: {
-      'import.meta.env.VITE_APIKEY': JSON.stringify(isProduction ? process.env.VITE_APIKEY : import.meta.env.VITE_APIKEY),
+      'process.env.VITE_APIKEY': JSON.stringify(isProduction ? process.env.VITE_APIKEY : import.meta.env.VITE_APIKEY),
     },
   };
 });
