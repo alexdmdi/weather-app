@@ -5,7 +5,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import DayCSS from './components/DayCSS'
 import NightCSS from './components/NightCSS'
 
-
 import NavBar from './components/Navbar'
 import Weather from "./components/Weather"
 import FutureForecast from './components/FutureForecast';
@@ -29,7 +28,6 @@ function App() {
   const updateForecastData = (forecastData: object) => {
     setForecastData(forecastData);
   }
-
 
 
   return (
@@ -94,9 +92,8 @@ function App() {
 
 }
 
-
 export default App
 
 //NOTES:
-//line 52: react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
-//line 53: passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
+//line 61: react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
+//line 62: passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
