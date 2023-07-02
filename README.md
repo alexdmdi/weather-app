@@ -1,18 +1,25 @@
+## Page
+https://alexdmdi.github.io/weather-app/
+
 ## About 
+This is a react-vite typescript project that fetches weather data from a free API (https://OpenWeatherMap.org). By default the page sets the location
+to the nearest locale based on the users approximate coordinates, which are fetched from ipapi (https://ipapi.co/json). Units are in celcius. 
+The page theme changes based on the set location and whether or not it is day time there, based on sunset and sunrise.
 
-This is a react-vite typescript project that fetches weather data from a free API (https://OpenWeatherMap.org). By default the page gets the users location to set the weather and forecast data, by fetching approximate coordinates from ipapi (https://ipapi.co/json).
-
+## Built With
+-React (vite, typescript)
+-Bootstrap/CSS
+-Node packages/modules: date-and-time, gh-pages
 
 ## Data
-No data is retained, this project does not use a back end or database. 
-No data fetched from ipapi is used besides the approximate coordinates.
+No data is retained, there is no back end or database. 
+No data besides approximate coordinates is utilized from the ipapi json response
 
-
-Background Image sources:
-Day time image:
+## Image sources
+Day time background:
 Photo by Stanislav Kondratiev: https://www.pexels.com/photo/photo-of-a-blue-sky-with-white-clouds-2908983/
 
-Night time image:
+Night time background:
 https://www.wallpaperflare.com/sky-stars-night-cloudy-star-space-astronomy-nature-wallpaper-waays
 
 
