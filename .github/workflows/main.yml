@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print API Key
-        run: echo $VITE_APIKEY
+        run: echo "${{ secrets.VITE_APIKEY }}"
