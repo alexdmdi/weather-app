@@ -1,5 +1,5 @@
 ## Page
-For android/PC 
+For android/PC: <br>
 https://alexdmdi.github.io/weather-app/
 
 ## About 
