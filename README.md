@@ -1,6 +1,6 @@
-## Page
-For android/PC: <br>
-https://alexdmdi.github.io/weather-app/
+## Live Page <br>
+https://alexdmdi.github.io/weather-app/ <br>
+-May not work on some iPhones
 
 ## About 
 -This is a react-vite typescript project that fetches weather data from a free API (https://OpenWeatherMap.org). By default the page sets the location
