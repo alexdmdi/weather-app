@@ -3,7 +3,7 @@ import { Location } from "./types";
 import date from 'date-and-time';
 
 interface WeatherProps {
-  selectedLocation: Location | null | undefined;  //specifies that selecedLocation may be null or undefined, not just of type Location
+  selectedLocation: Location | null | undefined;  //specifies that selectedLocation may be null or undefined, not just of type Location
   updateForecastData: (data: object) => void; //specifies that updateWeatherData is a function that takes an object argument, and returns nothing
   updateTheme: (theme: boolean) => void; //specifies that updateTheme is a function that takes an object argument, and returns nothing
 }
