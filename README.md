@@ -19,7 +19,7 @@ https://alexdmdi.github.io/weather-app/ <br>
 
 ## Image Sources
 * Day time background: <br>
-Photo by Stanislav Kondratiev: 
+Photo by Stanislav Kondratiev: <br>
 https://www.pexels.com/photo/photo-of-a-blue-sky-with-white-clouds-2908983/
 
 * Night time background: <br>
