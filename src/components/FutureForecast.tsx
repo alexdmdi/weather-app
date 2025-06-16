@@ -120,7 +120,7 @@ function FutureForecast( {forecastData}: FutureForecastProps) {
         //populates weatherList in followingDays object, once api response is complete
         forecastData.list.forEach((listItem: any) => {
             
-            //sets up dateObj to follow  the selected citie timezone, by first converting to UTC+0 equivalent
+            //sets up dateObj to follow  the selected cities timezone, by first converting to UTC+0 equivalent
             //then adding the remaining offset (from the api response) between UTC+0 and the chosen city to finish converting time zone
             const unixEpochTimeMS: number = (listItem.dt + forecastData.city.timezone + (currentDate.todayDateObj.getTimezoneOffset())*60) * 1000; 
             const dateObj: Date = new Date(unixEpochTimeMS);
