@@ -96,4 +96,4 @@ export default App
 
 //NOTES:
 //line 61: react suspense promise under the hood, allowing react to asynchronously load the component when needed instead of including it in the initial bundle
-//line 62: passes setFilteredLocations as the prop value to provide the function that updates 'FilteredLocations' state when called
+//line 62: passes setFilteredLocations function as the prop value to provide the function that updates 'FilteredLocations' state when called
